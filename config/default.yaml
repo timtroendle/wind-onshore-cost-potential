@@ -1,0 +1,9 @@
+# The right place for all your configuration values.
+slope: 4
+x0: 5
+cluster-sync:
+    url: euler.ethz.ch
+    send-ignore: .syncignore-send
+    receive-ignore: .syncignore-receive
+    cluster-base-dir: ~/Develop/wind-externalities
+    local-results-dir: build/cluster
