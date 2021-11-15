@@ -1,6 +1,6 @@
-# Wind Externalities
+# Social cost of wind power
 
-Externalities of onshore wind in Europe.
+Social cost of wind power in Europe with a focus on disamenity costs (in addition to technology cost).
 
 This repository contains the entire scientific project, including code and report. The philosophy behind this repository is that no intermediary results are included, but all results are computed from raw data and code.
 
