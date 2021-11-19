@@ -42,3 +42,5 @@ __pycache__
 # Snakemake
 .snakemake/
 dag.pdf
+notebooks/.ipynb_checkpoints/
+data/JRC_POPULATION_2018.dbf
