@@ -1,6 +1,6 @@
 # The right place for all your configuration values.
-slope: 4
-x0: 5
+data-sources:
+    population: https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/JRC_GRID_2018.zip
 cluster-sync:
     url: euler.ethz.ch
     send-ignore: .syncignore-send

@@ -2,6 +2,7 @@ PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-tablen
 
 configfile: "config/default.yaml"
 include: "./rules/sync.smk"
+include: "./rules/download.smk"
 localrules: all, report, clean
 
 onstart:
