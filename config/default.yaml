@@ -1,6 +1,13 @@
 # The right place for all your configuration values.
 data-sources:
     population: https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/JRC_GRID_2018.zip
+    capacity-factors: https://globalwindatlas.info/api/gis/country/DEU/capacity-factor_IEC2/
+parameters:
+    investment-cost:  963000 # €/MW # TODO add source
+    annual-maintenance-cost: 11340 # €/MW/yr # TODO add source
+    discount-rate: 0.073 # TODO add source
+    lifetime: 30 # yrs # TODO add source
+    availability: 0.9 # TODO add source
 cluster-sync:
     url: euler.ethz.ch
     send-ignore: .syncignore-send

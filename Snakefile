@@ -3,6 +3,8 @@ PANDOC = "pandoc --filter pantable --filter pandoc-fignos --filter pandoc-tablen
 configfile: "config/default.yaml"
 include: "./rules/sync.smk"
 include: "./rules/download.smk"
+include: "./rules/preprocess.smk"
+include: "./rules/analyse.smk"
 localrules: all, report, clean
 
 onstart:
@@ -16,9 +18,9 @@ onerror:
 
 
 rule all:
-    message: "Run entire analysis and compile report."
+    message: "Run entire analysis."
     input:
-        "build/report.html"
+        "build/lcoe.png"
 
 
 def pandoc_options(wildcards):

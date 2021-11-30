@@ -9,7 +9,7 @@ rule download_population:
     shell: "curl -sLo {output} '{params.url}'"
 
 
-rule unzip_population:
+rule population:
     message: "Unzip population data."
     input:
         rules.download_population.output[0]
@@ -19,3 +19,11 @@ rule unzip_population:
     conda: "../envs/shell.yaml"
     shadow: "minimal"
     shell: "unzip -o {input} -d build/data/population"
+
+
+rule download_capacity_factors:
+    message: "Download capacity factors."
+    params: url = config["data-sources"]["capacity-factors"]
+    output: protected("data/automatic/raw-capacity-factors.tif")
+    conda: "../envs/shell.yaml"
+    shell: "curl -sLo {output} '{params.url}'"
