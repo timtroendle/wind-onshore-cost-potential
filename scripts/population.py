@@ -5,18 +5,19 @@ import rasterio
 from typing import Protocol
 from zipfile import ZipFile
 from dataclasses import dataclass
+from functools import lru_cache
 
 import math
 import numpy as np
 import pandas as pd
 from affine import Affine
-from scipy import signal # TODO: add to envs
+from scipy import signal
 
 from settings import DIR_DATA
 
 
 def download_url(url, save_path, chunk_size=128) -> str:
-    
+
     # If file is already downloaded, return
     if os.path.isfile(save_path):
         return save_path
@@ -61,10 +62,10 @@ def get_JRC_GRID_2018(file_name) -> str:
 
 def write_tif(full_path: str, data: np.ndarray, transform: Affine):
     # https://rasterio.readthedocs.io/en/latest/quickstart.html#opening-a-dataset-in-writing-mode
-    
+
     height, width = data.shape
     dtype = data.dtype
-    
+
     with rasterio.open(
         full_path,
         'w',
@@ -81,31 +82,34 @@ def write_tif(full_path: str, data: np.ndarray, transform: Affine):
 
 
 def within_radius_mask(radius: int) -> np.ndarray:
-    # TODO: From JN - Consider cleaning up this chunk of code
-    # TODO: QA bug - When radius=1 the center is not the cell with the highest number
-    # TODO: Adapt logic such that the 2-D array means actually "within" radius, rather than "between" radius-x and radius+x
-    # TODO: Consider using drawing from a Uniform distribution "Monte-Carlo"-like, where the number of samples is a function input
-    
-    width = 0.5
-    resolution = 20
-    step = 1/resolution
-    
-    rng = range(-radius-1,radius+2)
-    df = pd.DataFrame(index=rng, columns=rng, dtype=np.float64)
 
+    @lru_cache(maxsize=128)
+    def within_radius(r, a, b, draws=1000000):
+        '''
+        This function returns the probability that the distance between a random point in the raster 0, 0 and a random
+        point in the raster a, b is smaller than a given radius r.
+        :param r: cutoff radius
+        :param a: distance of the rasters in one direction
+        :param b: distnace of the rasters in the other direction
+        :return: probability
+        '''
+        count = 0
+        for i in range(draws):
+            x0, y0 = -0.5 + np.random.random(), -0.5 + np.random.random()
+            x1, y1 = a - 0.5 + np.random.random(), b - 0.5 + np.random.random()
+            d = math.sqrt((x1-x0)**2 + (y1-y0)**2)
+            if d < r:
+                count += 1
+        return count/draws
+
+    rng = range(-radius, radius+1)
+    df = pd.DataFrame(index=rng, columns=rng, dtype=np.float64)
     for x in rng:
         for y in rng:
-            count = 0
-            for x0 in np.arange(-0.5, 0.5, step):
-                for y0 in np.arange(-0.5, 0.5, step):
-                    for x1 in np.arange(x-0.5, x+0.5, step):
-                        for y1 in np.arange(y-0.5, y+0.5, step):
-                            distance = math.sqrt((x1-x0)**2 + (y1-y0)**2)
-                            if (radius - width <= distance) & (distance < radius + width):
-                                count += 1 / resolution**4
-            df.loc[x, y] = float(count)
-    
-    return df.values
+            a, b = min(abs(x), abs(y)), max(abs(x), abs(y))
+            df.loc[x, y] = within_radius(radius, a, b)
+
+    return df.round(2).values
 
 
 class TifGenerator(Protocol):
@@ -150,10 +154,10 @@ class TifManager:
 
         with rasterio.open(self._full_path) as dataset:
             # Only 1 band supported
-            index, = dataset.indexes      
+            index, = dataset.indexes
             data = dataset.read(index)
         return data
-    
+
     @property
     def transform(self):
         self.create()
@@ -193,7 +197,7 @@ class Population:
 @dataclass
 class PopulationInRadius:
     radius: int
-    
+
     def file(self):
         return f'population_{self.radius}r.tif'
 
@@ -221,16 +225,15 @@ class PopulationInRadius:
 
 if __name__ == '__main__':
     from matplotlib import pyplot as plt
-    
-    
+
     ## Plot mask
-    import seaborn as sns # TODO: if we keep using this, add to envs packages
+    import seaborn as sns  # TODO: if we delete this, delete from environment.yaml
     mask = within_radius_mask(radius=3)
     sns.heatmap(mask, annot=True)
     plt.show()
-    
+
     ## Plot population
     # population = TifManager(Population())
     # plt.imshow(population.data, cmap=plt.get_cmap('gray_r'), vmin=0, vmax=1000)
     # plt.show()
- 
+
