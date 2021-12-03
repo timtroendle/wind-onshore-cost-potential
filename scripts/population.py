@@ -65,7 +65,7 @@ def write_tif(full_path: str, data: np.ndarray, transform: Affine):
 
     height, width = data.shape
     dtype = data.dtype
-
+    print(full_path)
     with rasterio.open(
         full_path,
         'w',
@@ -97,8 +97,8 @@ def within_radius_mask(radius: int) -> np.ndarray:
         for i in range(draws):
             x0, y0 = -0.5 + np.random.random(), -0.5 + np.random.random()
             x1, y1 = a - 0.5 + np.random.random(), b - 0.5 + np.random.random()
-            d = math.sqrt((x1-x0)**2 + (y1-y0)**2)
-            if d < r:
+            distance = math.sqrt((x1-x0)**2 + (y1-y0)**2)
+            if distance < r:
                 count += 1
         return count/draws
 
@@ -106,7 +106,7 @@ def within_radius_mask(radius: int) -> np.ndarray:
     df = pd.DataFrame(index=rng, columns=rng, dtype=np.float64)
     for x in rng:
         for y in rng:
-            a, b = min(abs(x), abs(y)), max(abs(x), abs(y))
+            a, b = sorted([abs(x), abs(y)])
             df.loc[x, y] = within_radius(radius, a, b)
 
     return df.round(2).values
@@ -119,6 +119,7 @@ class TifGenerator(Protocol):
         ...
     def create(self) -> None:
         ...
+
 
 @dataclass
 class TifManager:
@@ -152,7 +153,7 @@ class TifManager:
 
         self.create()
 
-        with rasterio.open(self._full_path) as dataset:
+        with rasterio.open(self.full_path) as dataset:
             # Only 1 band supported
             index, = dataset.indexes
             data = dataset.read(index)
@@ -162,7 +163,7 @@ class TifManager:
     def transform(self):
         self.create()
 
-        with rasterio.open(self._full_path) as dataset:
+        with rasterio.open(self.full_path) as dataset:
             # Only 1 band supported
             transform = dataset.transform
         return transform
@@ -214,7 +215,7 @@ class PopulationInRadius:
         )
 
         write_tif(
-            full_path=os.path.join(self.file(), self.folder()),
+            full_path=os.path.join(self.folder(), self.file()),
             data = data,
             transform = population.transform
         )
@@ -224,6 +225,23 @@ class PopulationInRadius:
 # pop = rasterio.open(os.path.join(DIR_DATA, 'population.tif'))
 
 if __name__ == '__main__':
+    # Test
+    radius1 = TifManager(PopulationInRadius(radius=1))
+
+    # Cost calculation example
+    data = radius1.data*100
+
+    # TODO Missing implementations (discuss with Tim on how to integrate his calculations)
+    # 1) Filter Germany
+    # 2) Implement class with ad-hoc create function for:
+    #       - Calculate disamenity
+    #       - Calculate annualized costs (not a tiff since constant)
+    #       - Calculate FLH
+    #       - Calculate LCOE
+
+    # TODO Plotting (discuss)
+
+    """
     from matplotlib import pyplot as plt
 
     ## Plot mask
@@ -236,4 +254,4 @@ if __name__ == '__main__':
     # population = TifManager(Population())
     # plt.imshow(population.data, cmap=plt.get_cmap('gray_r'), vmin=0, vmax=1000)
     # plt.show()
-
+    """
