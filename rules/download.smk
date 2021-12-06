@@ -27,3 +27,11 @@ rule download_capacity_factors:
     output: protected("data/automatic/raw-capacity-factors.tif")
     conda: "../envs/shell.yaml"
     shell: "curl -sLo {output} '{params.url}'"
+
+
+rule download_road_proximity:
+    message: "Download road proximity data."
+    params: url = config["data-sources"]["road-proximity"]
+    output: protected("data/automatic/raw-road-proximity.tif")
+    conda: "../envs/shell.yaml"
+    shell: "curl -sLo {output} '{params.url}'"

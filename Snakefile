@@ -20,7 +20,8 @@ onerror:
 rule all:
     message: "Run entire analysis."
     input:
-        "build/lcoe.png"
+        "build/lcoe.png",
+        "build/data/eligibility.tif"
 
 
 def pandoc_options(wildcards):
