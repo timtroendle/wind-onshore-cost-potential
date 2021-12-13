@@ -90,7 +90,7 @@ class PopulationInRadius:
         self.folder = folder if folder is not None else DIR_DATA
 
     def create(self):
-        population = TifManager(Population())
+        population = TifManager(Population()) # TODO: use tif created via snakemake
         data = signal.convolve2d(
             population.get_data,
             within_radius_mask(radius=self.radius),
