@@ -38,7 +38,7 @@ class TifManager:
         return os.path.join(self.tif_generator.folder, self.tif_generator.file)
 
     @property
-    def get_data(self):
+    def data(self):
         with rasterio.open(self.full_path) as dataset:
             # Only 1 band supported
             index, = dataset.indexes
@@ -46,7 +46,7 @@ class TifManager:
         return data
 
     @property
-    def get_transform(self):
+    def transform(self):
         with rasterio.open(self.full_path) as dataset:
             # Only 1 band supported
             transform = dataset.transform

@@ -89,19 +89,26 @@ class PopulationInRadius:
         self.file   = file   if file   is not None else f'population_{radius}r.tif'
         self.folder = folder if folder is not None else DIR_DATA
 
-    def create(self):
-        population = TifManager(Population()) # TODO: use tif created via snakemake
+    def create(self, source_path = None):
+
+        if source_path is None:
+            population = Population()
+        else:
+            folder, file = os.path.split(source_path)
+            population = Population(file=file, folder=folder)
+
+        population = TifManager(population)
         data = signal.convolve2d(
-            population.get_data,
+            population.data,
             within_radius_mask(radius=self.radius),
             boundary='wrap',
             mode='same',
         )
 
         write_tif(
-            full_path=os.path.join(self.folder(), self.file()),
+            full_path=os.path.join(self.folder, self.file),
             data = data,
-            transform = population.get_transform
+            transform = population.transform
         )
 
 
@@ -109,23 +116,18 @@ class PopulationInRadius:
 def generate_population(destination_path: str):
 
     folder, file = os.path.split(destination_path)
-    _ = TifManager(
-        tif_generator=Population(file=file, folder=folder),
-        force_create=False, # No neet to rerun the download routine, even if the script changes
-    )
-
+    Population(file=file, folder=folder).create()
 
 # For snakemake
 def generate_population_in_radius(source_path: str, destination_paths: List[str], distances: List[int]):
     for distance, destination_path in zip(distances, destination_paths):
         folder, file = os.path.split(destination_path)
-
-        _ = TifManager(tif_generator=PopulationInRadius(radius=distance, file=file, folder=folder))
+        PopulationInRadius(radius=distance, file=file, folder=folder).create(source_path=source_path)
 
 
 if __name__ == '__main__':
+    # No source_path since the file is downloaded
     generate_population(
-        # source_path = snakemake.input.population, # This is downloaded form the data source
         destination_path = snakemake.output.population
     )
 
