@@ -1,9 +1,0 @@
-# Introduction
-
-...
-
-# Results
-
-...
-
-# References

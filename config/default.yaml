@@ -11,9 +11,3 @@ parameters:
     availability: 0.9 # TODO add source
     eligibility:
         min-road-distance-in-m: 1000
-cluster-sync:
-    url: euler.ethz.ch
-    send-ignore: .syncignore-send
-    receive-ignore: .syncignore-receive
-    cluster-base-dir: ~/Develop/wind-externalities
-    local-results-dir: build/cluster
