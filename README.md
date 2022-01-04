@@ -12,24 +12,19 @@ You need [conda](https://conda.io/docs/index.html) to run the analysis. Using co
 
 ## Run the analysis
 
-    snakemake  --use-conda
+    snakemake --use-conda -j1
 
 This will run all analysis steps to reproduce results.
 
 You can also run certain parts only by using other `snakemake` rules; to get a list of all rules run `snakemake --list`.
 
-To generate a PDF of the dependency graph of all steps, run :
+To generate a PDF of the dependency graph of all steps `build/dag.pdf`, run:
 
-    snakemake --rulegraph > build/dag.dot
-    dot -Tpdf -o build/dag.pdf build/dag.dot
-
-On Unix and Windows Powershell you can simplify this to:
-
-    snakemake --rulegraph | dot -Tpdf > build/dag.pdf
+    snakemake --use-conda -j1 -f dag
 
 ## Run the tests
 
-    snakemake test --use-conda
+    snakemake --use-conda -j1 test
 
 ## Repo structure
 

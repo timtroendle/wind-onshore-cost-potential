@@ -19,6 +19,19 @@ rule clean: # removes all generated results
         """
 
 
+rule dag:
+    message: "Plotting dependency graph of the workflow."
+    output:
+        dot = "build/dag.dot",
+        pdf = "build/dag.pdf"
+    conda: "envs/dag.yaml"
+    shell:
+        """
+        snakemake --rulegraph > {output.dot}
+        dot -Tpdf -o {output.pdf} {output.dot}
+        """
+
+
 rule test:
     conda: "envs/test.yaml"
     output: "build/test-report.html"
