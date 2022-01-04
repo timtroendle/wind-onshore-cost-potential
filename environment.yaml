@@ -6,3 +6,4 @@ dependencies:
     - python=3.8
     - flake8=3.8.3
     - snakemake-minimal=6.5.3
+    - graphviz 2.50.0

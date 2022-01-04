@@ -18,9 +18,14 @@ This will run all analysis steps to reproduce results.
 
 You can also run certain parts only by using other `snakemake` rules; to get a list of all rules run `snakemake --list`.
 
-To generate a PDF of the dependency graph of all steps, and if you have `dot` installed, run:
+To generate a PDF of the dependency graph of all steps, run :
 
-    snakemake --rulegraph | dot -Tpdf > dag.pdf
+    snakemake --rulegraph > build/dag.dot
+    dot -Tpdf -o build/dag.pdf build/dag.dot
+
+On Unix and Windows Powershell you can simplify this to:
+
+    snakemake --rulegraph | dot -Tpdf > build/dag.pdf
 
 ## Run the tests
 
