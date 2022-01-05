@@ -1,3 +1,5 @@
+import os
+
 import rioxarray
 
 HOURS_PER_YEAR = 8760
@@ -7,6 +9,7 @@ def calculate_lcoe(investment_costs, annual_maintenance_costs, path_to_capacity_
                    discount_rate, lifetime, availability, path_to_output):
     assert 0 <= discount_rate <= 1
     assert 0 <= availability <= 1
+    print(f"Conda env of LCOE: {os.environ['CONDA_DEFAULT_ENV']}") # FIXME remove debug statement
     capacity_factors = rioxarray.open_rasterio(path_to_capacity_factors)
 
     annuity_factor = _present_value_of_annuity_factor(discount_rate, lifetime)

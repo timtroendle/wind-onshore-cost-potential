@@ -26,10 +26,7 @@ rule dag:
         pdf = "build/dag.pdf"
     conda: "envs/dag.yaml"
     shell:
-        """
-        snakemake --rulegraph > {output.dot}
-        dot -Tpdf -o {output.pdf} {output.dot}
-        """
+        "snakemake --rulegraph > {output.dot} && dot -Tpdf -o {output.pdf} {output.dot}"
 
 
 rule test:
