@@ -1,7 +1,9 @@
-name: default
+name: default_environment
 channels:
     - conda-forge
+    - bioconda
 dependencies:
+    - snakemake-minimal=6.5.3
     - python=3.8
     - numpy=1.20.2
     - scipy=1.6.2
@@ -18,3 +20,4 @@ dependencies:
     - rioxarray=0.9.0
     - matplotlib=3.3.0
     - seaborn=0.11.2
+    - glaes=1.2.1
