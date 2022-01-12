@@ -11,12 +11,13 @@ rule all:
         "build/data/eligibility.tif"
 
 
-rule clean: # removes all generated results
-    shell:
-        """
-        rm -r ./build/*
-        echo "Data downloaded to data/ has not been cleaned."
-        """
+rule clean:
+    message: "Remove all build results but keep downloaded data."
+    run:
+        import shutil
+
+        shutil.rmtree("build")
+        print("Data downloaded to data/ has not been cleaned.")
 
 
 rule dag:
