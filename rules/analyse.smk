@@ -14,7 +14,7 @@ rule lcoe:
         availability = config["parameters"]["availability"]
     output: "build/data/lcoe-eur-per-mwh.tif"
     conda: "../envs/default.yaml"
-    script: "../scripts/analyse/lcoe.py"
+    shell: "python {input} {params} {output}"
 
 
 rule lcoe_cdf:
@@ -24,7 +24,7 @@ rule lcoe_cdf:
         lcoe = rules.lcoe.output[0]
     output: "build/lcoe.png"
     conda: "../envs/default.yaml"
-    script: "../scripts/analyse/lcoe_ecdf.py"
+    shell: "python {input} {params} {output}"
 
 
 rule eligibility:
@@ -36,4 +36,4 @@ rule eligibility:
         min_road_distance_in_m = config["parameters"]["eligibility"]["min-road-distance-in-m"]
     output: "build/data/eligibility.tif"
     conda: "../envs/default.yaml"
-    script: "../scripts/analyse/eligibility.py"
+    shell: "python {input} {params} {output}"

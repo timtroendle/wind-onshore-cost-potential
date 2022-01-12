@@ -1,3 +1,5 @@
+import argparse
+
 import matplotlib.pyplot as plt
 import seaborn as sns
 import rioxarray
@@ -21,7 +23,10 @@ def visualise_lcoe_cdf(path_to_lcoe, path_to_plot):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("path_to_lcoe", type=str)
+    parser.add_argument("path_to_plot", type=str)
+
     visualise_lcoe_cdf(
-        path_to_lcoe=snakemake.input.lcoe,
-        path_to_plot=snakemake.output[0]
+        **vars(parser.parse_args())
     )

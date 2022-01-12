@@ -1,7 +1,5 @@
-import os
+import argparse
 
-print(f"Conda env of LCOE: {os.environ['CONDA_DEFAULT_ENV']}") # FIXME remove debug statement
-breakpoint()
 import rioxarray
 
 HOURS_PER_YEAR = 8760
@@ -31,12 +29,15 @@ def _present_value_of_annuity_factor(discount_rate, lifetime):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("path_to_capacity_factors", type=str)
+    parser.add_argument("investment_costs", type=float)
+    parser.add_argument("annual_maintenance_costs", type=float)
+    parser.add_argument("discount_rate", type=float)
+    parser.add_argument("lifetime", type=int)
+    parser.add_argument("availability", type=float)
+    parser.add_argument("path_to_output", type=str)
+
     calculate_lcoe(
-        investment_costs=snakemake.params.investment_cost,
-        annual_maintenance_costs=snakemake.params.annual_maintenance_cost,
-        path_to_capacity_factors=snakemake.input.capacity_factors,
-        discount_rate=snakemake.params.discount_rate,
-        lifetime=snakemake.params.lifetime,
-        availability=snakemake.params.availability,
-        path_to_output=snakemake.output[0]
+        **vars(parser.parse_args())
     )

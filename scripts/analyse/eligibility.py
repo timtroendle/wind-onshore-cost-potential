@@ -1,3 +1,5 @@
+import argparse
+
 import numpy as np
 import rasterio
 
@@ -14,14 +16,14 @@ ELIGIBLE = 1
 DATATYPE = np.uint8
 
 
-def land_eligibility(path_to_road_proximity, path_to_ouput, min_road_distance_in_m):
+def land_eligibility(path_to_road_proximity, path_to_output, min_road_distance_in_m):
     with rasterio.open(path_to_road_proximity) as src:
         transform = src.transform
         road_proximity = src.read(1)
         crs = src.crs
     road_proximity = from_index_to_value(road_proximity)
     eligibility = determine_eligibility(road_proximity, min_road_distance_in_m)
-    with rasterio.open(path_to_ouput, 'w', driver='GTiff', height=eligibility.shape[0],
+    with rasterio.open(path_to_output, 'w', driver='GTiff', height=eligibility.shape[0],
                        width=eligibility.shape[1], count=1, dtype=DATATYPE,
                        crs=crs, transform=transform) as new_geotiff:
         new_geotiff.write(eligibility, 1)
@@ -38,8 +40,11 @@ def determine_eligibility(road_proximity, min_road_distance_in_m):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("path_to_road_proximity", type=str)
+    parser.add_argument("min_road_distance_in_m", type=int)
+    parser.add_argument("path_to_output", type=str)
+
     land_eligibility(
-        path_to_road_proximity=snakemake.input.road_proximity,
-        min_road_distance_in_m=snakemake.params.min_road_distance_in_m,
-        path_to_ouput=snakemake.output[0]
+        **vars(parser.parse_args())
     )
