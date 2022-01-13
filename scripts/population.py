@@ -128,11 +128,11 @@ def generate_population_in_radius(source_path: str, destination_paths: List[str]
 if __name__ == '__main__':
     # No source_path since the file is downloaded
     generate_population(
-        destination_path = snakemake.output.population
+        destination_path = snakemake.output.population,
     )
 
     generate_population_in_radius(
-        source_path = snakemake.input.population,
+        source_path = snakemake.input.population, # or snakemake.output.population?
         destination_paths = snakemake.output.population_in_radius,
         distances = snakemake.params.distances,
     )
