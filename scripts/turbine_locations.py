@@ -1,13 +1,19 @@
+import argparse
+
 import glaes as gl
+#from glaes.core.priors import PriorSet
 import pandas as pd
 import numpy as np
 
-def turbine_placement(input_path = 'glaes/test/data/de_1km.shp', output_path='test'):
+
+def turbine_placement(input_path, prior_directory_path, output_path_csv, output_path_tif):
+    gl.Priors.loadDirectory(prior_directory_path)
+
     ec = gl.ExclusionCalculator(input_path, srs=3035, pixelSize=100, limitOne=False)
-    
+
     ##### exclusions #####
 
-    # Areas above the alpine forest line 
+    # Areas above the alpine forest line
     ec.excludePrior("elevation_threshold", value=(1750, None) ) # alpine forest line assumed at 1750 m
 
     # maximum slope (degrees) and sea
@@ -40,7 +46,7 @@ def turbine_placement(input_path = 'glaes/test/data/de_1km.shp', output_path='te
     # "national parks - 1000m buffer"
     ec.excludePrior("protected_park_proximity", value=(None,1000) )
 
-    # "Natura 2000 - habitats directive sites" 
+    # "Natura 2000 - habitats directive sites"
     # "*potentially"
     ec.excludePrior("protected_habitat_proximity", value=(None, 0) )
 
@@ -48,7 +54,7 @@ def turbine_placement(input_path = 'glaes/test/data/de_1km.shp', output_path='te
     ec.excludePrior("protected_bird_proximity", value=(None, 0) )
 
     # "Other protected areas"
-    # "*Biosphere reserves, landscape protection areas, natural monuments and sites, 
+    # "*Biosphere reserves, landscape protection areas, natural monuments and sites,
     #   protected habitats, and landscape section"
     ec.excludePrior("protected_biosphere_proximity", value=(None, 0) )
     ec.excludePrior("protected_landscape_proximity", value=(None, 0) )
@@ -56,21 +62,33 @@ def turbine_placement(input_path = 'glaes/test/data/de_1km.shp', output_path='te
 
     # "lakes (> 50 ha) - 1000m buffer"
     ec.excludePrior("lake_proximity", value=(None,1000) )
-    
-    
 
     #turbine placement
     ec.distributeItems(separation=1000)
     turbine_coordinates = ec.itemCoords
-    
+
     #Advanced placement (not implemented)
     #ec.distributeItems(separation=(1200,600), axialDirection=45)
-    
-    # visulisaton (currenly disabled)
-    #ec.draw()
-    
+
     # map of available area (currently not used)
-    #ec.save("DE_land_availability.tif", overwrite=True)
+    ec.save(output_path_tif, overwrite=True)
 
     # Save turbine placement
-    np.save(output_path, turbine_coordinates)
+    (
+        pd
+        .DataFrame(turbine_coordinates)
+        .rename(columns={0: "x_m", 1: "y_m"})
+        .to_csv(output_path_csv, index=True, header=True)
+    )
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("input_path", type=str)
+    parser.add_argument("prior_directory_path", type=str)
+    parser.add_argument("output_path_csv", type=str)
+    parser.add_argument("output_path_tif", type=str)
+
+    turbine_placement(
+        **vars(parser.parse_args())
+    )

@@ -54,3 +54,46 @@ rule download_road_proximity:
     output: protected("data/automatic/raw-road-proximity.tif")
     run:
         Path(input[0]).rename(output[0])
+
+
+rule download_nuts:
+    message: "Download NUTS shape files."
+    input: HTTP.remote(config["data-sources"]["nuts"])
+    output: protected("data/automatic/raw-nuts.zip")
+    run:
+        Path(input[0]).rename(output[0])
+
+
+rule nuts:
+    message: "Unzip NUTS data."
+    input:
+        rules.download_nuts.output[0]
+    output:
+        shp = "build/data/NUTS_2013_01M_SH/data/NUTS_RG_01M_2013.shp",
+        aux = expand("build/data/NUTS_2013_01M_SH/data/NUTS_RG_01M_2013.{suffix}", suffix=["dbf", "prj", "sbn", "sbx", "shp.xml", "shx"]),
+        doc = "build/data/NUTS_2013_01M_SH/readme.txt"
+    shadow: "minimal"
+    run:
+        import zipfile
+        with zipfile.ZipFile(input[0], 'r') as zip_ref:
+            zip_ref.extractall("build/data/")
+
+
+rule download_priors:
+    message: "Download GLAES priors."
+    input: HTTP.remote(config["data-sources"]["priors"])
+    output: protected("data/automatic/raw-priors.zip")
+    run:
+        Path(input[0]).rename(output[0])
+
+
+rule priors:
+    message: "Unzip priors data."
+    input:
+        rules.download_priors.output[0]
+    output: directory("build/data/priors")
+    shadow: "minimal"
+    run:
+        import zipfile
+        with zipfile.ZipFile(input[0], 'r') as zip_ref:
+            zip_ref.extractall("build/data/priors")
