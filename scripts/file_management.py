@@ -44,6 +44,21 @@ def unzip_file(file_name, archive, destination_folder) -> str:
             return file_full_path
 
 
+def tif_data(full_path):
+    with rasterio.open(full_path) as dataset:
+        # Only 1 band supported
+        index, = dataset.indexes
+        data = dataset.read(index)
+    return data
+
+
+def tif_transform(full_path):
+    with rasterio.open(full_path) as dataset:
+        # Only 1 band supported
+        transform = dataset.transform
+    return transform
+
+
 def write_tif(full_path: str, data: np.ndarray, transform: Affine):
     # https://rasterio.readthedocs.io/en/latest/quickstart.html#opening-a-dataset-in-writing-mode
 
