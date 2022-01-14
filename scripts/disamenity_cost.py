@@ -6,7 +6,7 @@ from scripts.file_management import write_tif, tif_data, tif_transform
 
 def disamenity_costs(radius_from, radius_to, scenario = 'low') -> float:
     # TODO: Anselm, could you add here the function stored somewhere in the notebook?!
-    return NotImplementedError
+    raise NotImplementedError
 
 
 def calculate_disamenity(distances, source_paths, destination_path):
@@ -17,7 +17,6 @@ def calculate_disamenity(distances, source_paths, destination_path):
         for distance, source_path in zip(distances, source_paths)]
     # Sort by distance, although it should not be necessary
     distance_path.sort(key=lambda tup: tup[0])
-    
     
     for i in range(len(distance_path)):
 
@@ -42,14 +41,15 @@ def calculate_disamenity(distances, source_paths, destination_path):
 
             result += population * disamenity
 
-        write_tif(
-            full_path=destination_path, 
-            data=result, 
-            transform=tif_transform(transform)
-        )
+    write_tif(
+        full_path=destination_path, 
+        data=result, 
+        transform=transform
+    )
 
 
 if __name__ == '__main__':
+    
     calculate_disamenity(
         distances=snakemake.params.distances,               # This should be a list of distances
         source_paths=snakemake.input.population_in_radius,  # List corresponding (by position) to the population within radius (distance) 

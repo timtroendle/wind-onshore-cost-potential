@@ -22,16 +22,16 @@ class TifGenerator(Protocol):
 @dataclass
 class TifManager:
     tif_generator: TifGenerator
-    force_create: bool = True
-
-    def __post_init__(self):
-        exists = os.path.isfile(self.full_path)
-
-        if exists and not self.force_create:
-            print(f'{self.tif_generator.file} exists, no need to create a new one')
-        else:
-            self.tif_generator.create()
-            print(f'{self.tif_generator.file} created')
+    
+    # force_create: bool = False
+    # This procedure is coveder by snakemake
+    # def __post_init__(self):
+    #     exists = os.path.isfile(self.full_path)
+    #     if exists and not self.force_create:
+    #         print(f'{self.tif_generator.file} exists, no need to create a new one')
+    #     else:
+    #         self.tif_generator.create()
+    #         print(f'{self.tif_generator.file} created')
 
     @property
     def full_path(self):

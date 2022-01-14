@@ -64,7 +64,7 @@ def write_tif(full_path: str, data: np.ndarray, transform: Affine):
 
     height, width = data.shape
     dtype = data.dtype
-    print(full_path)
+    print("Called write_tif with ouput path:", full_path)
     with rasterio.open(
         full_path,
         'w',
