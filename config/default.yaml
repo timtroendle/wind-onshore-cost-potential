@@ -3,6 +3,8 @@ data-sources:
     population: https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/JRC_GRID_2018.zip
     capacity-factors: https://globalwindatlas.info/api/gis/country/DEU/capacity-factor_IEC2/
     road-proximity: https://data.mendeley.com/public-files/datasets/trvfb3nwt2/files/f66bef97-39aa-4501-97bc-871b7c77b04a/file_downloaded
+    nuts: https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/NUTS_2013_01M_SH.zip
+    priors: https://md-datasets-cache-zipfiles-prod.s3.eu-west-1.amazonaws.com/trvfb3nwt2-1.zip
 parameters:
     investment-cost:  963000 # €/MW # TODO add source
     annual-maintenance-cost: 11340 # €/MW/yr # TODO add source

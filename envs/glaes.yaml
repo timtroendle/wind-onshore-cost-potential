@@ -1,0 +1,16 @@
+name: glaes
+channels:
+    - conda-forge
+dependencies:
+    - python=3.8
+    - numpy=1.20.2
+    - scipy=1.7.3
+    - descartes=1.1.0
+    - pandas=1.2.3
+    - gdal=2.4.4
+    - libgdal=2.4.4
+    - pip=21.3.1
+    - pip:
+        - https://github.com/FZJ-IEK3-VSA/geokit/archive/v1.3.0.zip
+        - https://github.com/FZJ-IEK3-VSA/glaes/archive/refs/tags/v1.2.1.zip
+
