@@ -2,7 +2,6 @@
 data-sources:
     population: https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/JRC_GRID_2018.zip
     capacity-factors: https://globalwindatlas.info/api/gis/country/DEU/capacity-factor_IEC2/
-    road-proximity: https://data.mendeley.com/public-files/datasets/trvfb3nwt2/files/f66bef97-39aa-4501-97bc-871b7c77b04a/file_downloaded
     nuts: https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/NUTS_2013_01M_SH.zip
     priors: https://md-datasets-cache-zipfiles-prod.s3.eu-west-1.amazonaws.com/trvfb3nwt2-1.zip
 parameters:
@@ -11,5 +10,3 @@ parameters:
     discount-rate: 0.073 # TODO add source
     lifetime: 30 # yrs # TODO add source
     availability: 0.9 # TODO add source
-    eligibility:
-        min-road-distance-in-m: 1000

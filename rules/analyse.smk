@@ -27,18 +27,6 @@ rule lcoe_cdf:
     shell: "python {input} {params} {output}"
 
 
-rule eligibility:
-    message: "Determine land eligibility."
-    input:
-        script = "scripts/analyse/eligibility.py",
-        road_proximity = rules.road_proximity.output[0],
-    params:
-        min_road_distance_in_m = config["parameters"]["eligibility"]["min-road-distance-in-m"]
-    output: "build/data/eligibility.tif"
-    conda: "../envs/default.yaml"
-    shell: "python {input} {params} {output}"
-
-
 rule country_shape:
     message: "Isolate {wildcards.country_id} shape from all NUTS."
     input:

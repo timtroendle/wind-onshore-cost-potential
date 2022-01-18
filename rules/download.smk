@@ -48,14 +48,6 @@ rule download_capacity_factors:
         Path(input[0]).rename(output[0])
 
 
-rule download_road_proximity:
-    message: "Download road proximity data."
-    input: HTTP.remote(config["data-sources"]["road-proximity"])
-    output: protected("data/automatic/raw-road-proximity.tif")
-    run:
-        Path(input[0]).rename(output[0])
-
-
 rule download_nuts:
     message: "Download NUTS shape files."
     input: HTTP.remote(config["data-sources"]["nuts"])
