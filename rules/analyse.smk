@@ -69,3 +69,14 @@ rule turbine_placement:
         tif = "build/turbine-locations-{country_id}.tif"
     conda: "../envs/glaes.yaml"
     shell: "python {input} {output}"
+
+
+rule cost_per_turbine:
+    message: "Spatially merge turbines and their costs."
+    input:
+        script = "scripts/merge.py",
+        turbines = rules.turbine_placement.output.csv, # TODO include list of countries
+        lcoe = rules.lcoe.output
+    output: "build/turbines-{country_id}.csv"
+    conda: "../envs/default.yaml"
+    shell: "python {input} {output}"
