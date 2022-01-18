@@ -27,6 +27,27 @@ rule lcoe_cdf:
     shell: "python {input} {params} {output}"
 
 
+rule population_in_radius:
+    message: "Create map of population counts within {wildcards.distance}km."
+    input:
+        script = "scripts/population.py",
+        population = rules.population.output[0]
+    output: "build/population-within-{distance}km.tif"
+    conda: "../envs/default.yaml"
+    shell: "python {input} {wildcards.distance} {output}"
+
+
+rule disamenity_cost:
+    message: "Create map of disamenity cost."
+    input:
+        script = "scripts/disamenity_cost.py",
+        maps = expand("build/population-within-{distance}km.tif", distance=config["parameters"]["distances-in-km"])
+    params: distances = config["parameters"]["distances-in-km"]
+    output: "build/disamenity-cost.tif",
+    conda: "../envs/default.yaml"
+    shell: "python {input.script} {output} --source_paths {input.maps} --distances {params.distances}"
+
+
 rule country_shape:
     message: "Isolate {wildcards.country_id} shape from all NUTS."
     input:

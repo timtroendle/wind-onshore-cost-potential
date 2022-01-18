@@ -10,3 +10,4 @@ parameters:
     discount-rate: 0.073 # TODO add source
     lifetime: 30 # yrs # TODO add source
     availability: 0.9 # TODO add source
+    distances-in-km: [1, 2, 4]

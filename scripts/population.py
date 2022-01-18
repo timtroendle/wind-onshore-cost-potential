@@ -1,4 +1,4 @@
-
+import argparse
 import os
 import math
 import pathlib
@@ -7,14 +7,13 @@ import rasterio
 import numpy as np
 import pandas as pd
 
-from typing import List
 from scipy import signal
 from functools import lru_cache
 from dataclasses import dataclass
 
 
-from scripts.file_management import write_tif, unzip_file, download_url
-from scripts.tif_manager import TifManager, TifGenerator
+from file_management import write_tif
+from tif_manager import TifManager
 
 
 DIR_PROJECT = pathlib.Path(__file__).parent.resolve().parent.resolve()
@@ -50,15 +49,6 @@ def within_radius_mask(radius: int) -> np.ndarray:
             df.loc[x, y] = within_radius(radius, a, b)
 
     return df.round(2).values
-
-
-def get_JRC_GRID_2018(file_name) -> str:
-    archive = download_url(
-        url=r'https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/JRC_GRID_2018.zip',
-        save_path=os.path.join(DIR_DATA, r'JRC_GRID_2018.zip')
-    )
-
-    return unzip_file(file_name, archive=archive, destination_folder=DIR_DATA)
 
 
 @dataclass
@@ -113,29 +103,18 @@ class PopulationInRadius:
 
 
 # For snakemake
-def generate_population(destination_path: str):
-
+def generate_population_in_radius(source_path: str, destination_path: str, distance: int):
     folder, file = os.path.split(destination_path)
-    Population(file=file, folder=folder).create()
-
-# For snakemake
-def generate_population_in_radius(source_path: str, destination_paths: List[str], distances: List[int]):
-    for distance, destination_path in zip(distances, destination_paths):
-        folder, file = os.path.split(destination_path)
-        PopulationInRadius(radius=distance, file=file, folder=folder).create(source_path=source_path)
+    PopulationInRadius(radius=distance, file=file, folder=folder).create(source_path=source_path)
 
 
 if __name__ == '__main__':
-    ## Exits already
-    ## No source_path since the file is downloaded
-    # generate_population(
-    #     destination_path = snakemake.output.population,
-    # )
+    parser = argparse.ArgumentParser()
+    parser.add_argument("source_path", type=str)
+    parser.add_argument("distance", type=int)
+    parser.add_argument("destination_path", type=str)
 
-    # TODO: Implement rule
     generate_population_in_radius(
-        source_path = snakemake.input.population_in_radius,
-        destination_paths = snakemake.output.population_in_radius,
-        distances = snakemake.params.distances,
+        **vars(parser.parse_args())
     )
 
