@@ -6,7 +6,7 @@ from .file_management import write_tif, tif_data, tif_transform
 
 
 def disamenity_costs(radius_from, radius_to, scenario = 'low') -> float:
-     # calculates the disamenity costs in € per person, per annum, per MW installed wind capacity
+    # Calculates the disamenity costs in € per person, per annum, per MW installed wind capacity
     # radius from is the inner radius in km and radius_to the outer radius of the assessed area.
 
     if scenario == 'low':
@@ -24,7 +24,7 @@ def disamenity_costs(radius_from, radius_to, scenario = 'low') -> float:
 
 
     # costs per household, per year, and per windpark
-    area_weighted_costs = cost_slope/2 *(radius_to**2 * (2*np.log(radius_to) -1) - (radius_from**2 * (2*np.log(radius_from) -1))) / (radius_to**2 - radius_from**2) -  cost_slope * np.log(max_distance);
+    area_weighted_costs = cost_slope/2 *(radius_to**2 * (2*np.log(radius_to) -1) - (radius_from**2 * (2*np.log(radius_from) -1))) / (radius_to**2 - radius_from**2) -  cost_slope * np.log(max_distance)
 
     # Further assumptions
     GBP_EUR = 0.86
