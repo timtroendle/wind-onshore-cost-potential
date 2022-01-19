@@ -37,39 +37,38 @@ def disamenity_costs(radius_from, radius_to, scenario = 'low') -> float:
 
 def calculate_disamenity(distances, source_paths, destination_path):
 
-    # Create a list of tuples [(distance1, path1), ...]
-    distance_path = [
-        (distance, source_path)
-        for distance, source_path in zip(distances, source_paths)]
-    # Sort by distance, although it should not be necessary
-    distance_path.sort(key=lambda tup: tup[0])
+    assert len(distances) == len(source_paths), f'distances (len = {len(distances)}) and source_paths {len(source_paths)} have differnet length' 
+    assert distances == sorted(distances), f'distances should be sorted form smallest to greatest, whereas I got {distances}'
 
-    for i in range(len(distance_path)):
+    previous_source_path = None
+    previous_distance    = None
+    previous_transform   = None
 
-        if i == 0:
-            population = tif_data(distance_path[i][1]) # Fist element of the list (lowest distance), second [1] element of the tuple (path)
-            disamenity = disamenity_costs(
-                radius_from=0,
-                radius_to=distance_path[i][0])
+    cumulated_disamenity = 0
 
-            transform = tif_transform(distance_path[i][1])
-            result = population * disamenity
+    for distance, source_path in zip(distances, source_paths):
+        # Population in a counted betwenn two distances
+        population = tif_data(source_path) - (tif_data(previous_source_path) if previous_source_path is not None else 0)
+        disamenity = disamenity_costs(
+                radius_from = (previous_distance if previous_distance is not None else 0),
+                radius_to   = distance,
+            )
+        
+        # Sums in every iteration the disamenity
+        cumulated_disamenity = population * disamenity
 
-        else:
-            population = tif_data(distance_path[i][1]) - tif_data(distance_path[i-1][1]) # Fist element of the list (lowest distance), second [1] element of the tuple (path)
-            disamenity = disamenity_costs(
-                radius_from=distance_path[i-1][0],
-                radius_to=distance_path[i-1][0])
+        # QA that affine transform matrices are consistent
+        transform = tif_transform(source_path)
+        assert (transform == previous_transform) | (previous_transform is None), 'You are iterating over .tif files that have different affine transform matices'
 
-            new_transform = tif_transform(distance_path[i][1])
-            assert new_transform == transform, 'You are iterating over .tif files that have different affine transform matices'
-            transform = new_transform
-
-            result += population * disamenity
-
+        # Setting the next iteration
+        previous_source_path = source_path
+        previous_distance = distance
+        previous_transform = transform
+    
     write_tif(
         full_path=destination_path,
-        data=result,
+        data=cumulated_disamenity,
         transform=transform
     )
 
