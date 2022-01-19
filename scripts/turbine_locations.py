@@ -20,7 +20,7 @@ def turbine_placement(input_path, prior_directory_path, output_path_csv, output_
     ec.excludePrior("slope_threshold", value=(11.3, None) )
 
     # "water bodies"
-    ec.excludePrior("river_proximity", value=100 )
+    ec.excludePrior("river_proximity", value=(100, None) )
 
     # "settlement areas - 200m buffer"
     ec.excludePrior("settlement_proximity", value=(None, 200) )
@@ -40,8 +40,8 @@ def turbine_placement(input_path, prior_directory_path, output_path_csv, output_
     # "airport public safety zones - 5100m buffer"
     ec.excludePrior("airport_proximity", value=(None, 5100) )
 
-    # "power grid( >110kV) - 250m buffer"
-    ec.excludePrior("power_line_proximity", value=(None, 250) )
+    # "power grid( >110kV) - 200m buffer"
+    ec.excludePrior("power_line_proximity", value=(None, 200) )
 
     # "national parks - 1000m buffer"
     ec.excludePrior("protected_park_proximity", value=(None,1000) )
