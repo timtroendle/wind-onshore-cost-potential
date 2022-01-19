@@ -1,6 +1,5 @@
-from turtle import distance
-from scripts.population import generate_population, generate_population_in_radius
-from scripts.disamenity_cost import calculate_disamenity, disamenity_costs
+from scripts.population import generate_population_in_radius
+from scripts.disamenity_cost import calculate_disamenity
 
 
 
@@ -10,22 +9,25 @@ population = r"C:\Users\sgarl\Documents\GitHub\wind-externalities\data\populatio
 population_in_radius =[
     r"C:\Users\sgarl\Documents\GitHub\wind-externalities\data\population_1.tif",
     r"C:\Users\sgarl\Documents\GitHub\wind-externalities\data\population_2.tif",
-    r"C:\Users\sgarl\Documents\GitHub\wind-externalities\data\population_3.tif",
+    r"C:\Users\sgarl\Documents\GitHub\wind-externalities\data\population_4.tif",
 ]
-distances=[1,2,3]
+distances=[1,2,4]
 
 disamenity = r"C:\Users\sgarl\Documents\GitHub\wind-externalities\data\disamenity.tif"
 
+# generate_population(
+#     destination_path = population,
+# )
 
-generate_population(
-    destination_path = population,
-)
+"""
+for destination_path, distance in zip(population_in_radius, distances):
+    generate_population_in_radius(
+        source_path=population,
+        destination_path=destination_path,
+        distance=distance,
+    )
+"""
 
-generate_population_in_radius(
-    source_path=population,
-    destination_paths=population_in_radius,
-    distances=distances,
-)
 
 calculate_disamenity(
     distances=distances,
