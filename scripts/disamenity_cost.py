@@ -2,7 +2,7 @@ import argparse
 
 import numpy as np
 
-from file_management import write_tif, tif_data, tif_transform
+from .file_management import write_tif, tif_data, tif_transform
 
 
 def disamenity_costs(radius_from, radius_to, scenario = 'low') -> float:
@@ -10,11 +10,11 @@ def disamenity_costs(radius_from, radius_to, scenario = 'low') -> float:
     # radius from is the inner radius in km and radius_to the outer radius of the assessed area.
 
     if scenario == 'low':
-        cost_slope = -31;
-        max_distance = 4;
+        cost_slope = -31
+        max_distance = 4
     elif scenario == 'high':
-        cost_slope = -64;
-        max_distance = 8;
+        cost_slope = -64
+        max_distance = 8
     else:
         print('Not a valid scenario name')
 
@@ -27,10 +27,10 @@ def disamenity_costs(radius_from, radius_to, scenario = 'low') -> float:
     area_weighted_costs = cost_slope/2 *(radius_to**2 * (2*np.log(radius_to) -1) - (radius_from**2 * (2*np.log(radius_from) -1))) / (radius_to**2 - radius_from**2) -  cost_slope * np.log(max_distance);
 
     # Further assumptions
-    GBP_EUR = 0.86;
-    people_household = 2;
-    turbines_park = 12.5;
-    MW_turbine = 2;
+    GBP_EUR = 0.86
+    people_household = 2
+    turbines_park = 12.5
+    MW_turbine = 2
 
     return(area_weighted_costs / GBP_EUR / people_household / turbines_park / MW_turbine)
 

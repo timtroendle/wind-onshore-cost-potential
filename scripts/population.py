@@ -2,7 +2,6 @@ import argparse
 import os
 import math
 import pathlib
-import rasterio
 
 import numpy as np
 import pandas as pd
@@ -12,8 +11,8 @@ from functools import lru_cache
 from dataclasses import dataclass
 
 
-from file_management import write_tif
-from tif_manager import TifManager
+from .file_management import write_tif
+from .tif_manager import TifManager
 
 
 DIR_PROJECT = pathlib.Path(__file__).parent.resolve().parent.resolve()
@@ -57,27 +56,28 @@ class Population:
     folder: str = DIR_DATA
 
     def create(self):
-        source_tif = get_JRC_GRID_2018('JRC_1K_POP_2018.tif')
-
-        with rasterio.open(source_tif) as dataset:
-            index, = dataset.indexes
-            data = dataset.read(index)
-            transform = dataset.transform
-
-        data = np.where(data==dataset.nodata, 0, data)
-
-        write_tif(
-            full_path=os.path.join(self.folder, self.file),
-            data=data,
-            transform=transform,
-        )
+        # source_tif = get_JRC_GRID_2018('JRC_1K_POP_2018.tif')
+        # 
+        # with rasterio.open(source_tif) as dataset:
+        #     index, = dataset.indexes
+        #     data = dataset.read(index)
+        #     transform = dataset.transform
+        # 
+        # data = np.where(data==dataset.nodata, 0, data)
+        # 
+        # write_tif(
+        #     full_path=os.path.join(self.folder, self.file),
+        #     data=data,
+        #     transform=transform,
+        # )
+        raise NotImplementedError('The creation is handles by another script')
 
 
 class PopulationInRadius:
     def __init__(self, radius:int, file:str = None, folder: str = None) -> None:
         self.radius = radius
-        self.file   = file   if file   is not None else f'population_{radius}r.tif'
-        self.folder = folder if folder is not None else DIR_DATA
+        self.file = file
+        self.folder = folder
 
     def create(self, source_path = None):
 
