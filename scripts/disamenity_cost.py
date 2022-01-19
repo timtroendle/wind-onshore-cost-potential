@@ -24,7 +24,14 @@ def disamenity_costs(radius_from, radius_to, scenario = 'low') -> float:
 
 
     # costs per household, per year, and per windpark
-    area_weighted_costs = cost_slope/2 *(radius_to**2 * (2*np.log(radius_to) -1) - (radius_from**2 * (2*np.log(radius_from) -1))) / (radius_to**2 - radius_from**2) -  cost_slope * np.log(max_distance)
+    area_weighted_costs = \
+        cost_slope/2 * (
+            radius_to**2 * (2*np.log(radius_to) -1)
+            -(radius_from**2 * (2*np.log(radius_from) -1)) # TODO: this log(radus_from) does not allow to calculate the the disamenity for an interval starting at zero
+        ) / (
+            radius_to**2
+            -radius_from**2
+        ) - cost_slope * np.log(max_distance)
 
     # Further assumptions
     GBP_EUR = 0.86
