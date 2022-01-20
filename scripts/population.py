@@ -11,8 +11,8 @@ from functools import lru_cache
 from dataclasses import dataclass
 
 
-from .file_management import write_tif
-from .tif_manager import TifManager
+from file_management import write_tif
+from tif_manager import TifManager
 
 
 DIR_PROJECT = pathlib.Path(__file__).parent.resolve().parent.resolve()
@@ -57,20 +57,6 @@ class Population:
     folder: str = DIR_DATA
 
     def create(self):
-        # source_tif = get_JRC_GRID_2018('JRC_1K_POP_2018.tif')
-        # 
-        # with rasterio.open(source_tif) as dataset:
-        #     index, = dataset.indexes
-        #     data = dataset.read(index)
-        #     transform = dataset.transform
-        # 
-        # data = np.where(data==dataset.nodata, 0, data)
-        # 
-        # write_tif(
-        #     full_path=os.path.join(self.folder, self.file),
-        #     data=data,
-        #     transform=transform,
-        # )
         raise NotImplementedError('The creation is handles by another script')
 
 

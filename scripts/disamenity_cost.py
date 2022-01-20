@@ -2,7 +2,7 @@ import argparse
 
 import numpy as np
 
-from .file_management import write_tif, tif_data, tif_transform
+from file_management import write_tif, tif_data, tif_transform
 
 
 def disamenity_costs(radius_from, radius_to, scenario = 'low') -> float:
@@ -44,7 +44,7 @@ def disamenity_costs(radius_from, radius_to, scenario = 'low') -> float:
 
 def calculate_disamenity(distances, source_paths, destination_path):
 
-    assert len(distances) == len(source_paths), f'distances (len = {len(distances)}) and source_paths {len(source_paths)} have differnet length' 
+    assert len(distances) == len(source_paths), f'distances (len = {len(distances)}) and source_paths {len(source_paths)} have differnet length'
     assert distances == sorted(distances), f'distances should be sorted form smallest to greatest, whereas I got {distances}'
 
     previous_source_path = None
@@ -60,7 +60,7 @@ def calculate_disamenity(distances, source_paths, destination_path):
                 radius_from = (previous_distance if previous_distance is not None else 0),
                 radius_to   = distance,
             )
-        
+
         # Sums in every iteration the disamenity
         cumulated_disamenity = population * disamenity
 
@@ -72,7 +72,7 @@ def calculate_disamenity(distances, source_paths, destination_path):
         previous_source_path = source_path
         previous_distance = distance
         previous_transform = transform
-    
+
     write_tif(
         full_path=destination_path,
         data=cumulated_disamenity,
