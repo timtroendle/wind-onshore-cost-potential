@@ -19,16 +19,16 @@ DIR_PROJECT = pathlib.Path(__file__).parent.resolve().parent.resolve()
 DIR_DATA = os.path.join(DIR_PROJECT, 'data')
 
 
-def within_radius_mask(radius: int) -> np.ndarray:
+def within_radius_mask(radius: float) -> np.ndarray:
 
     @lru_cache(maxsize=128)
-    def within_radius(r, a, b, draws=1000000):
+    def within_radius(a, b, draws=1000000):
         '''
         This function returns the probability that the distance between a random point in the raster 0, 0 and a random
         point in the raster a, b is smaller than a given radius r.
-        :param r: cutoff radius
-        :param a: distance of the rasters in one direction
-        :param b: distnace of the rasters in the other direction
+        :param r: cutoff radius (in km)
+        :param a: distance of the rasters in one direction (in km)
+        :param b: distnace of the rasters in the other direction (in km)
         :return: probability
         '''
         count = 0
@@ -36,16 +36,17 @@ def within_radius_mask(radius: int) -> np.ndarray:
             x0, y0 = -0.5 + np.random.random(), -0.5 + np.random.random()
             x1, y1 = a - 0.5 + np.random.random(), b - 0.5 + np.random.random()
             distance = math.sqrt((x1-x0)**2 + (y1-y0)**2)
-            if distance < r:
+            if distance < radius:
                 count += 1
         return count/draws
 
-    rng = range(-radius, radius+1)
+    ceil = int(np.ceil(radius))
+    rng = range(-ceil, ceil+1)
     df = pd.DataFrame(index=rng, columns=rng, dtype=np.float64)
     for x in rng:
         for y in rng:
             a, b = sorted([abs(x), abs(y)])
-            df.loc[x, y] = within_radius(radius, a, b)
+            df.loc[x, y] = within_radius(a, b)
 
     return df.round(2).values
 
