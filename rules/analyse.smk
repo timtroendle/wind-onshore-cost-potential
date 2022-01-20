@@ -59,7 +59,7 @@ rule country_shape:
 
 
 rule turbine_placement:
-    message: "Determine locations of turbines."
+    message: "Determine locations of turbines in {wildcards.country_id}."
     input:
         script = "scripts/turbine_locations.py",
         shape = "build/data/shapes/{country_id}.shp",
@@ -76,7 +76,8 @@ rule cost_per_turbine:
     input:
         script = "scripts/merge.py",
         turbines = rules.turbine_placement.output.csv, # TODO include list of countries
-        lcoe = rules.lcoe.output
+        lcoe = rules.lcoe.output,
+        disamenity_cost = rules.disamenity_cost.output
     output: "build/turbines-{country_id}.csv"
     conda: "../envs/default.yaml"
     shell: "python {input} {output}"
