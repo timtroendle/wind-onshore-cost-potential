@@ -2,7 +2,7 @@ import argparse
 
 import numpy as np
 
-from file_management import write_tif, tif_data, tif_transform
+from file_management import write_tif, tif_data, tif_transform, tif_crs
 
 
 def disamenity_costs(radius_from, radius_to, scenario = 'low') -> float:
@@ -50,6 +50,7 @@ def calculate_disamenity(distances, source_paths, destination_path):
     previous_source_path = None
     previous_distance    = None
     previous_transform   = None
+    previous_crs         = None
 
     cumulated_disamenity = 0
 
@@ -66,17 +67,23 @@ def calculate_disamenity(distances, source_paths, destination_path):
 
         # QA that affine transform matrices are consistent
         transform = tif_transform(source_path)
+        crs       = tif_crs(source_path)
+
         assert (transform == previous_transform) | (previous_transform is None), 'You are iterating over .tif files that have different affine transform matices'
+        assert (crs       == previous_crs      ) | (previous_crs       is None), 'You are iterating over .tif files that have different crs properties'
+
 
         # Setting the next iteration
         previous_source_path = source_path
         previous_distance = distance
         previous_transform = transform
+        previous_crs = crs
 
     write_tif(
         full_path=destination_path,
         data=cumulated_disamenity,
-        transform=transform
+        transform=transform,
+        crs=crs,
     )
 
 

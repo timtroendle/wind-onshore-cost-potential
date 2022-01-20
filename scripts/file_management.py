@@ -1,5 +1,6 @@
 import os
 import rasterio
+import rasterio.crs
 
 import numpy as np
 
@@ -33,12 +34,17 @@ def tif_data(full_path):
 
 def tif_transform(full_path):
     with rasterio.open(full_path) as dataset:
-        # Only 1 band supported
         transform = dataset.transform
     return transform
 
 
-def write_tif(full_path: str, data: np.ndarray, transform: Affine):
+def tif_crs(full_path):
+    with rasterio.open(full_path) as dataset:
+        crs = dataset.crs
+    return crs
+
+
+def write_tif(full_path: str, data: np.ndarray, transform: Affine, crs : rasterio.crs.CRS):
     # https://rasterio.readthedocs.io/en/latest/quickstart.html#opening-a-dataset-in-writing-mode
 
     height, width = data.shape
@@ -52,12 +58,12 @@ def write_tif(full_path: str, data: np.ndarray, transform: Affine):
         width=width,
         count=1,
         dtype=dtype,
-        crs='+proj=latlong',    # TODO: QA, maybe can be taken from the original .tif property
-        compress='lzw',         # TODO: Are we sure that the original .tif was losslessly comporessed, and here also?
+        crs=crs,
+        compress='lzw',     # TODO: Are we sure that the original .tif was losslessly comporessed, and here also?
         transform=transform,
     ) as dst:
         dst.write(data, 1)
 
 
-
-
+if __name__ == '__main__':
+    pass

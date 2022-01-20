@@ -1,13 +1,8 @@
 import os
-import pathlib
 import rasterio
 
-import numpy as np
-
-from dataclasses import dataclass
 from typing import Protocol
-
-from scipy import signal
+from dataclasses import dataclass
 
 
 class TifGenerator(Protocol):
@@ -48,10 +43,14 @@ class TifManager:
     @property
     def transform(self):
         with rasterio.open(self.full_path) as dataset:
-            # Only 1 band supported
             transform = dataset.transform
         return transform
 
+    @property
+    def crs(self):
+        with rasterio.open(self.full_path) as dataset:
+            crs = dataset.crs
+        return crs
 
 if __name__ == '__main__':
     pass

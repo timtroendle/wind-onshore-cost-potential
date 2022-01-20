@@ -85,7 +85,8 @@ class PopulationInRadius:
         write_tif(
             full_path=os.path.join(self.folder, self.file),
             data = data,
-            transform = population.transform
+            transform = population.transform,
+            crs = population.crs,
         )
 
 
