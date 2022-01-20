@@ -1,7 +1,7 @@
 import argparse
 
+import geokit as gk
 import glaes as gl
-#from glaes.core.priors import PriorSet
 import pandas as pd
 import numpy as np
 
@@ -73,6 +73,9 @@ def turbine_placement(input_path, prior_directory_path, output_path_csv, output_
     # map of available area (currently not used)
     ec.save(output_path_tif, overwrite=True)
 
+    if ec.srs.IsSame(gk.srs.EPSG3035) == 1: # this should always be the case in our analysis
+        # EPSG3035's unit is meters, and sub-meter precision is not necessary.
+        turbine_coordinates = turbine_coordinates.astype(int)
     # Save turbine placement
     (
         pd
