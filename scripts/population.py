@@ -26,9 +26,10 @@ def within_radius_mask(radius: float) -> np.ndarray:
         '''
         This function returns the probability that the distance between a random point in the raster 0, 0 and a random
         point in the raster a, b is smaller than a given radius r.
-        :param r: cutoff radius (in km)
-        :param a: distance of the rasters in one direction (in km)
-        :param b: distnace of the rasters in the other direction (in km)
+        The units of a, b, and r are the resolution of the population raster (currently 1 km)
+        :param r: cutoff radius
+        :param a: distance of the rasters in one direction
+        :param b: distnace of the rasters in the other direction
         :return: probability
         '''
         count = 0
