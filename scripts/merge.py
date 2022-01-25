@@ -5,11 +5,14 @@ import xarray as xr
 import rioxarray
 
 
-def merge(path_to_turbine_locations: str, path_to_lcoe: str, path_to_disamenity_cost: str, path_to_output: str):
+def merge(path_to_turbine_locations: str, path_to_lcoe: str, path_to_annual_energy: str, path_to_disamenity_cost: str, path_to_output: str):
     turbines = pd.read_csv(path_to_turbine_locations, index_col=0)
     lcoe = rioxarray.open_rasterio(path_to_lcoe)
+    annual_energy = rioxarray.open_rasterio(path_to_annual_energy)
     disamenity_cost = rioxarray.open_rasterio(path_to_disamenity_cost)
     assert_same_coords(lcoe, disamenity_cost)
+
+    disamenity_cost_per_mwh = disamenity_cost / annual_energy
 
     x_res = int(lcoe.x.diff("x")[0].item()) // 2
     y_res = int(lcoe.y.diff("y")[0].item()) // 2
@@ -20,10 +23,10 @@ def merge(path_to_turbine_locations: str, path_to_lcoe: str, path_to_disamenity_
         axis=1
     )
     lcoes = map_coords.apply(lambda row: lcoe.sel(x=row.x, y=row.y).item(), axis=1)
-    disamenity_costs = map_coords.apply(lambda row: disamenity_cost.sel(x=row.x, y=row.y).item(), axis=1)
+    disamenity_costs = map_coords.apply(lambda row: disamenity_cost_per_mwh.sel(x=row.x, y=row.y).item(), axis=1)
     (
         turbines
-        .assign(lcoe_eur_per_mwh=lcoes, disamenity_cost_eur_per_turbine=disamenity_costs)
+        .assign(lcoe_eur_per_mwh=lcoes, disamenity_cost_eur_per_mwh=disamenity_costs)
         .to_csv(path_to_output, index=True, header=True)
     )
 
@@ -58,6 +61,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("path_to_turbine_locations", type=str)
     parser.add_argument("path_to_lcoe", type=str)
+    parser.add_argument("path_to_annual_energy", type=str)
     parser.add_argument("path_to_disamenity_cost", type=str)
     parser.add_argument("path_to_output", type=str)
 

@@ -12,7 +12,9 @@ rule lcoe:
         discount_rate = config["parameters"]["discount-rate"],
         lifetime = config["parameters"]["lifetime"],
         availability = config["parameters"]["availability"]
-    output: "build/data/lcoe-eur-per-mwh.tif"
+    output:
+        lcoe = "build/data/lcoe-eur-per-mwh.tif",
+        annual_energy = "build/data/annual-energy-mwh.tif"
     conda: "../envs/default.yaml"
     shell: "python {input} {params} {output}"
 
@@ -76,7 +78,8 @@ rule cost_per_turbine:
     input:
         script = "scripts/merge.py",
         turbines = rules.turbine_placement.output.csv, # TODO include list of countries
-        lcoe = rules.lcoe.output,
+        lcoe = rules.lcoe.output.lcoe,
+        annual_energy=rules.lcoe.output.annual_energy,
         disamenity_cost = rules.disamenity_cost.output
     output: "build/turbines-{country_id}.csv"
     conda: "../envs/default.yaml"
