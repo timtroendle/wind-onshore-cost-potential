@@ -84,3 +84,13 @@ rule cost_per_turbine:
     output: "build/turbines-{country_id}.csv"
     conda: "../envs/default.yaml"
     shell: "python {input} {output}"
+
+
+rule cost_potential_curve:
+    message: "Plot cost potential curve."
+    input:
+        script = "scripts/plot.py",
+        turbines = rules.cost_per_turbine.output
+    output: "build/cost-potential-curve-{country_id}.png"
+    conda: "../envs/default.yaml"
+    shell: "python {input} {output}"

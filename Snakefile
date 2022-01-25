@@ -7,7 +7,7 @@ localrules: all, clean
 rule all:
     message: "Run entire analysis."
     input:
-        "build/turbines-DE.csv"
+        "build/cost-potential-curve-DE.png"
 
 
 rule clean:
