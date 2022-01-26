@@ -43,6 +43,7 @@ def disamenity_costs(radius_from, radius_to, scenario = 'low') -> float:
 
 
 def calculate_disamenity(distances, source_paths, destination_path):
+    # Calculates the disamenity costs in € per annum, per MW installed wind capacity
 
     assert len(distances) == len(source_paths), f'distances (len = {len(distances)}) and source_paths {len(source_paths)} have differnet length'
     assert distances == sorted(distances), f'distances should be sorted form smallest to greatest, whereas I got {distances}'

@@ -8,11 +8,11 @@ import rioxarray
 def merge(path_to_turbine_locations: str, path_to_lcoe: str, path_to_annual_energy: str, path_to_disamenity_cost: str, path_to_output: str):
     turbines = pd.read_csv(path_to_turbine_locations, index_col=0)
     lcoe = rioxarray.open_rasterio(path_to_lcoe)
-    annual_energy = rioxarray.open_rasterio(path_to_annual_energy)
+    full_load_hours = rioxarray.open_rasterio(path_to_annual_energy)
     disamenity_cost = rioxarray.open_rasterio(path_to_disamenity_cost)
     assert_same_coords(lcoe, disamenity_cost)
 
-    disamenity_cost_per_mwh = disamenity_cost / annual_energy
+    disamenity_cost_per_mwh = disamenity_cost / full_load_hours
 
     x_res = int(lcoe.x.diff("x")[0].item()) // 2
     y_res = int(lcoe.y.diff("y")[0].item()) // 2
