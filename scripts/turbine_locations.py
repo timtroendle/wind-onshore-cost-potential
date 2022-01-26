@@ -64,7 +64,7 @@ def turbine_placement(input_path, prior_directory_path, output_path_csv, output_
     ec.excludePrior("lake_proximity", value=(None,1000) )
 
     #turbine placement
-    ec.distributeItems(separation=1000)
+    ec.distributeItems(separation=500)
     turbine_coordinates = ec.itemCoords
 
     #Advanced placement (not implemented)
