@@ -44,6 +44,17 @@ def tif_crs(full_path):
     return crs
 
 
+def tif_values(full_path: str, coordinates: list[tuple]) -> list[float]:
+    """Returns the values correspoing to the input coordinates"""
+    
+    with rasterio.open(full_path) as src:
+        index, = src.indexes
+        data = src.read(index)
+        values = [data[src.index(*coordinate)] for coordinate in coordinates]
+        
+    return values
+
+
 def write_tif(full_path: str, data: np.ndarray, transform: Affine, crs : rasterio.crs.CRS):
     # https://rasterio.readthedocs.io/en/latest/quickstart.html#opening-a-dataset-in-writing-mode
 
