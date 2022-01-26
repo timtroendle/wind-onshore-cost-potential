@@ -1,12 +1,13 @@
+
 import os
 import rasterio
 import rasterio.crs
 
 import numpy as np
 
+from typing import List
 from affine import Affine
 from zipfile import ZipFile
-
 
 
 def unzip_file(file_name, archive, destination_folder) -> str:
@@ -18,7 +19,9 @@ def unzip_file(file_name, archive, destination_folder) -> str:
     with ZipFile(archive, 'r') as zipObj:
         listOfiles = zipObj.namelist()
         if file_name not in listOfiles:
-            raise Exception(f'Error: the file named {file_name} is not contained in the archive {archive}. Use one of the following file names:', listOfiles)
+            raise Exception(
+                f'Error: the file named {file_name} is not contained in the archive {archive}. Use one of the following file names:',
+                listOfiles)
         else:
             zipObj.extract(file_name, destination_folder)
             return file_full_path
@@ -44,18 +47,18 @@ def tif_crs(full_path):
     return crs
 
 
-def tif_values(full_path: str, coordinates: list[tuple]) -> list[float]:
+def tif_values(full_path: str, coordinates: List[tuple]) -> List[float]:
     """Returns the values correspoing to the input coordinates"""
-    
+
     with rasterio.open(full_path) as src:
         index, = src.indexes
         data = src.read(index)
         values = [data[src.index(*coordinate)] for coordinate in coordinates]
-        
+
     return values
 
 
-def write_tif(full_path: str, data: np.ndarray, transform: Affine, crs : rasterio.crs.CRS):
+def write_tif(full_path: str, data: np.ndarray, transform: Affine, crs: rasterio.crs.CRS):
     # https://rasterio.readthedocs.io/en/latest/quickstart.html#opening-a-dataset-in-writing-mode
 
     height, width = data.shape
@@ -70,7 +73,7 @@ def write_tif(full_path: str, data: np.ndarray, transform: Affine, crs : rasteri
         count=1,
         dtype=dtype,
         crs=crs,
-        compress='lzw',     # TODO: Are we sure that the original .tif was losslessly comporessed, and here also?
+        compress='lzw',  # TODO: Are we sure that the original .tif was losslessly comporessed, and here also?
         transform=transform,
     ) as dst:
         dst.write(data, 1)
