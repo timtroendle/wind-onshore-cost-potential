@@ -45,3 +45,4 @@ dag.pdf
 notebooks/.ipynb_checkpoints/
 data/JRC_POPULATION_2018.dbf
 data/
+.idea/
