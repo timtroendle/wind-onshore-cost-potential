@@ -1,22 +1,13 @@
 import argparse
-import os
-import math
-import pathlib
 
+import math
 import numpy as np
 import pandas as pd
 
 from scipy import signal
 from functools import lru_cache
-from dataclasses import dataclass
 
-
-from file_management import write_tif
-from tif_manager import TifManager
-
-
-DIR_PROJECT = pathlib.Path(__file__).parent.resolve().parent.resolve()
-DIR_DATA = os.path.join(DIR_PROJECT, 'data')
+from file_management import write_tif, tif_crs, tif_data, tif_transform
 
 
 def within_radius_mask(radius: float) -> np.ndarray:
@@ -52,49 +43,22 @@ def within_radius_mask(radius: float) -> np.ndarray:
     return df.round(2).values
 
 
-@dataclass
-class Population:
-    file: str = 'population.tif'
-    folder: str = DIR_DATA
-
-    def create(self):
-        raise NotImplementedError('The creation is handles by another script')
-
-
-class PopulationInRadius:
-    def __init__(self, radius:int, file:str = None, folder: str = None) -> None:
-        self.radius = radius
-        self.file = file
-        self.folder = folder
-
-    def create(self, source_path = None):
-
-        if source_path is None:
-            population = Population()
-        else:
-            folder, file = os.path.split(source_path)
-            population = Population(file=file, folder=folder)
-
-        population = TifManager(population)
-        data = signal.convolve2d(
-            population.data,
-            within_radius_mask(radius=self.radius),
-            boundary='wrap',
-            mode='same',
-        )
-
-        write_tif(
-            full_path=os.path.join(self.folder, self.file),
-            data = data,
-            transform = population.transform,
-            crs = population.crs,
-        )
-
-
-# For snakemake
 def generate_population_in_radius(source_path: str, destination_path: str, distance: int):
-    folder, file = os.path.split(destination_path)
-    PopulationInRadius(radius=distance, file=file, folder=folder).create(source_path=source_path)
+
+    data = signal.convolve2d(
+        tif_data(source_path),
+        within_radius_mask(radius=distance),
+        boundary='wrap',
+        mode='same',
+    )
+
+
+    write_tif(
+        full_path=destination_path,
+        data = data,
+        transform = tif_transform(source_path),
+        crs = tif_crs(source_path),
+    )
 
 
 if __name__ == '__main__':
