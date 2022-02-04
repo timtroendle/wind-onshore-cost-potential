@@ -27,11 +27,13 @@ def unzip_file(file_name, archive, destination_folder) -> str:
             return file_full_path
 
 
-def tif_data(full_path):
+def tif_data(full_path, replace_nodata=None):
     with rasterio.open(full_path) as dataset:
         # Only 1 band supported
         index, = dataset.indexes
         data = dataset.read(index)
+        if replace_nodata is not None:
+            data = np.where(data == dataset.nodata, replace_nodata, data)
     return data
 
 

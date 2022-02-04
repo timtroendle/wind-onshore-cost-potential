@@ -46,7 +46,7 @@ def within_radius_mask(radius: float) -> np.ndarray:
 def generate_population_in_radius(source_path: str, destination_path: str, distance: int):
 
     data = signal.convolve2d(
-        tif_data(source_path),
+        tif_data(source_path, replace_nodata=0),
         within_radius_mask(radius=distance),
         boundary='wrap',
         mode='same',
