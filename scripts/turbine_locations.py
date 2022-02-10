@@ -20,7 +20,7 @@ def turbine_placement(input_path, prior_directory_path, output_path_csv, output_
     ec.excludePrior("slope_threshold", value=(11.3, None) )
 
     # "water bodies"
-    ec.excludePrior("river_proximity", value=(100, None) )
+    ec.excludePrior("river_proximity", value=(None, 100) )
 
     # "settlement areas - 200m buffer"
     ec.excludePrior("settlement_proximity", value=(None, 200) )
@@ -44,10 +44,9 @@ def turbine_placement(input_path, prior_directory_path, output_path_csv, output_
     ec.excludePrior("power_line_proximity", value=(None, 200) )
 
     # "national parks - 1000m buffer"
-    ec.excludePrior("protected_park_proximity", value=(None,1000) )
+    ec.excludePrior("protected_park_proximity", value=(None,300) )
 
     # "Natura 2000 - habitats directive sites"
-    # "*potentially"
     ec.excludePrior("protected_habitat_proximity", value=(None, 0) )
 
     # "Natura 2000 - birds directive sites"
