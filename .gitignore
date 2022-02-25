@@ -1,6 +1,9 @@
 # generated files
 build/
 
+# alias to project folder
+documents
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof

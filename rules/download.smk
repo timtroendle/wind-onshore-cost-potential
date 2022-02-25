@@ -42,8 +42,8 @@ rule population:
 
 rule download_capacity_factors:
     message: "Download capacity factors."
-    input: HTTP.remote(config["data-sources"]["capacity-factors"])
-    output: protected("data/automatic/raw-capacity-factors.tif")
+    input: HTTP.remote(config["data-sources"]["capacity-factors"], additional_request_string="?download=1")
+    output: protected("data/automatic/raw-capacity-factors.nc")
     run:
         Path(input[0]).rename(output[0])
 

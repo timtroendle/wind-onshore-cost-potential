@@ -1,7 +1,7 @@
 # The right place for all your configuration values.
 data-sources:
     population: https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/JRC_GRID_2018.zip
-    capacity-factors: https://globalwindatlas.info/api/gis/country/DEU/capacity-factor_IEC2/
+    capacity-factors: https://zenodo.org/record/3899687/files/wind-onshore-timeseries.nc
     nuts: https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/NUTS_2013_01M_SH.zip
     priors: https://md-datasets-cache-zipfiles-prod.s3.eu-west-1.amazonaws.com/trvfb3nwt2-1.zip
 parameters:
@@ -10,4 +10,4 @@ parameters:
     discount-rate: 0.073 # TODO add source
     lifetime: 30 # yrs # TODO add source
     availability: 0.9 # TODO add source
-    distances-in-km: [1, 2, 4]
+    distances-in-km: [1, 2, 4] # TODO define
