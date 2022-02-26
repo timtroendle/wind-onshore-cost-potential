@@ -5,11 +5,14 @@ import numpy as np
 from file_management import write_tif, tif_data, tif_transform, tif_crs
 
 
-def disamenity_costs(radius_from, radius_to, scenario = 'low') -> float:
+def disamenity_costs(radius_from, radius_to, scenario='main') -> float:
     # Calculates the disamenity costs in € per person, per annum, per MW installed wind capacity
     # radius from is the inner radius in km and radius_to the outer radius of the assessed area.
 
-    if scenario == 'low':
+    if scenario == 'main':
+        cost_slope = -640
+        max_distance = 4
+    elif scenario == 'low':
         cost_slope = -31
         max_distance = 4
     elif scenario == 'high':
@@ -21,7 +24,6 @@ def disamenity_costs(radius_from, radius_to, scenario = 'low') -> float:
     assert (radius_to > 0) & (radius_from >= 0), 'radius must be positive'
     assert radius_to > radius_from, 'radius_to must be larger than radius_from'
     assert radius_to <= max_distance, f'radius_to exceeds the maximal distance'
-
 
     # costs per household, per year, and per windpark
     area_weighted_costs = \
@@ -36,7 +38,7 @@ def disamenity_costs(radius_from, radius_to, scenario = 'low') -> float:
     # Further assumptions
     GBP_EUR = 0.86
     people_household = 2
-    turbines_park = 12.5
+    turbines_park = 5
     MW_turbine = 2
 
     return(area_weighted_costs / GBP_EUR / people_household / turbines_park / MW_turbine)
@@ -59,7 +61,7 @@ def calculate_disamenity(distances, source_paths, destination_path):
         # Population in a counted betwenn two distances
         population = tif_data(source_path) - (tif_data(previous_source_path) if previous_source_path is not None else 0)
         disamenity = disamenity_costs(
-                radius_from = (previous_distance if previous_distance is not None else 0),
+                radius_from = (previous_distance if previous_distance is not None else 0.2),
                 radius_to   = distance,
             )
 
