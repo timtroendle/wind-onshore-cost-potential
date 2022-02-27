@@ -1,9 +1,36 @@
+from typing import List, Tuple
 import argparse
 
 import pandas as pd
+from scripts.file_management import tif_values
 import xarray as xr
 import rioxarray
 
+
+# TODO: draft - to be tested
+def get_locations(path_to_turbine_locations:str) -> List[Tuple]:
+    df = pd.read_csv(path_to_turbine_locations)
+    return list(zip(df['x_m'], df['x_m']))
+
+
+# TODO: draft - to be tested
+def test_merge(path_to_turbine_locations: str, path_to_lcoe: str, path_to_annual_energy: str, path_to_disamenity_cost: str, path_to_output: str):
+    locations = get_locations(path_to_turbine_locations)
+    
+    xs, ys = zip(*locations)
+    
+    # TODO: I do not know what the exact index and column names are supposed to be
+    df = pd.DataFrame(
+        index=pd.MultiIndex.from_arrays(
+            arrays=[xs, ys],
+            names=('xs', 'ys')))
+    df['LCOE'] = tif_values(path_to_lcoe, coordinates=locations)
+    df['Energy'] = tif_values(path_to_annual_energy, coordinates=locations)
+    df['Disamenty'] = tif_values(path_to_disamenity_cost, coordinates=locations)
+
+    # TODO: check ouput
+    df.to_csv(path_to_output)
+    
 
 def merge(path_to_turbine_locations: str, path_to_lcoe: str, path_to_annual_energy: str, path_to_disamenity_cost: str, path_to_output: str):
     turbines = pd.read_csv(path_to_turbine_locations, index_col=0)
