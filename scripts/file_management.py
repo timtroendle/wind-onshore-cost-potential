@@ -51,13 +51,16 @@ def tif_crs(full_path):
 
 def tif_values(full_path: str, coordinates: List[tuple]) -> List[float]:
     """Returns the values correspoing to the input coordinates"""
-
+    
+    # Decompose into x and y coordinates
+    xs, ys = np.array(coordinates).transpose() 
+    
     with rasterio.open(full_path) as src:
+        rows, cols = rasterio.transform.rowcol(src.transform, xs, ys)
         index, = src.indexes
         data = src.read(index)
-        values = [data[src.index(*coordinate)] for coordinate in coordinates]
 
-    return values
+    return [data[row, col] for row, col in zip(rows, cols)]
 
 
 def write_tif(full_path: str, data: np.ndarray, transform: Affine, crs: rasterio.crs.CRS):
