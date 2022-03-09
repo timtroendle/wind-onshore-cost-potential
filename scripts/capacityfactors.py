@@ -1,3 +1,5 @@
+import argparse
+
 import numpy as np
 import pandas as pd
 import geopandas as gpd
@@ -16,8 +18,6 @@ EPSG3035 = "EPSG:3035"
 
 def preprocess_capacity_factors(path_to_raw_cf: str, path_to_output: str):
     ds = xr.open_dataset(path_to_raw_cf)
-    # ds = ds.where(ds.lat < 38, drop=True).sel(time="2000") # FIXME remove, for debugging only
-    # ds = ds.sel(time="2000-01-01") # FIXME remove, for debugging only
     ds = ds.mean("time") # ASSUME average over 16 years
     ds = ds.expand_dims(time=[1], axis=0) # re-add time dimension as function expects it
     da = convert_old_style_capacity_factor_time_series(ds)
@@ -82,7 +82,10 @@ def convert_old_style_capacity_factor_time_series(ts):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("path_to_raw_cf", type=str)
+    parser.add_argument("path_to_output", type=str)
+
     preprocess_capacity_factors(
-        path_to_raw_cf=snakemake.input.raw,
-        path_to_output=snakemake.output[0]
+        **vars(parser.parse_args())
     )

@@ -8,7 +8,7 @@ rule annual_capacity_factors:
         raw = rules.download_capacity_factors.output[0],
     output: "build/data/raw-annual-capacity-factors.tif"
     conda: "../envs/default.yaml"
-    script: "../scripts/capacityfactors.py"
+    shell: "python {input} {output}"
 
 
 rule capacity_factors:
