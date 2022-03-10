@@ -5,47 +5,34 @@ import numpy as np
 from file_management import write_tif, tif_data, tif_transform, tif_crs
 
 
-def disamenity_costs(radius_from, radius_to, scenario='main') -> float:
-    # Calculates the disamenity costs in € per person, per annum, per MW installed wind capacity
-    # radius from is the inner radius in km and radius_to the outer radius of the assessed area.
+def disamenity_costs(radius_from, radius_to) -> float:
+    # Inputs: radius_from is the inner radius in km and radius_to the outer radius of the assessed area
+    # Returns the disamenity costs in €/turbine/person/year
 
-    if scenario == 'main':
-        cost_slope = -640
-        max_distance = 4
-    elif scenario == 'low':
-        cost_slope = -31
-        max_distance = 4
-    elif scenario == 'high':
-        cost_slope = -64
-        max_distance = 8
-    else:
-        print('Not a valid scenario name')
+    # Distance at which disamenity costs become zero
+    d0 = 4
 
     assert (radius_to > 0) & (radius_from >= 0), 'radius must be positive'
     assert radius_to > radius_from, 'radius_to must be larger than radius_from'
-    assert radius_to <= max_distance, f'radius_to exceeds the maximal distance'
+    assert radius_to <= d0, f'radius_to exceeds the maximal distance'
 
-    # costs per household, per year, and per windpark
+    # Cost function
+    a = -28.8
+    c = - a * np.log(d0)
     area_weighted_costs = \
-        cost_slope/2 * (
-            radius_to**2 * (2*np.log(radius_to) -1)
-            -(radius_from**2 * (2*np.log(radius_from) -1)) # TODO: this log(radus_from) does not allow to calculate the the disamenity for an interval starting at zero
+        a/2 * (
+            radius_to**2 * (2 * np.log(radius_to) - 1)
+            - (radius_from**2 * (2 * np.log(radius_from) - 1))
         ) / (
             radius_to**2
-            -radius_from**2
-        ) - cost_slope * np.log(max_distance)
+            - radius_from**2
+        ) + c
 
-    # Further assumptions
-    GBP_EUR = 0.86
-    people_household = 2
-    turbines_park = 5
-    MW_turbine = 2
-
-    return(area_weighted_costs / GBP_EUR / people_household / turbines_park / MW_turbine)
+    return area_weighted_costs
 
 
 def calculate_disamenity(distances, source_paths, destination_path):
-    # Calculates the disamenity costs in € per annum, per MW installed wind capacity
+    # Calculates the disamenity costs in €/turbine/year
 
     assert len(distances) == len(source_paths), f'distances (len = {len(distances)}) and source_paths {len(source_paths)} have differnet length'
     assert distances == sorted(distances), f'distances should be sorted form smallest to greatest, whereas I got {distances}'
