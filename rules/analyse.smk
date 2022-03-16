@@ -77,13 +77,15 @@ rule cost_per_turbine:
     message: "Spatially merge turbines and their costs."
     input:
         script = "scripts/merge.py",
-        turbines = rules.turbine_placement.output.csv, # TODO include list of countries
+        turbines = rules.turbine_placement.output.csv,
         lcoe = rules.lcoe.output.lcoe,
-        annual_energy=rules.lcoe.output.annual_energy,
-        disamenity_cost = rules.disamenity_cost.output
+        annual_energy = rules.lcoe.output.annual_energy,
+        disamenity_cost = rules.disamenity_cost.output,
+        population = expand("build/population-within-{distance}km.tif", distance=config["parameters"]["distances-in-km"])
+    params: distances = config["parameters"]["distances-in-km"]
     output: "build/turbines-{country_id}.csv"
     conda: "../envs/default.yaml"
-    shell: "python {input} {output}"
+    shell: "python {input} {output} --distances {params.distances}"
 
 
 rule cost_potential_curve:

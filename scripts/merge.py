@@ -1,10 +1,13 @@
-from typing import List, Tuple
 import argparse
 
 import pandas as pd
-from file_management import tif_values
 import xarray as xr
 import numpy as np
+
+from typing import List, Tuple
+
+from file_management import tif_values
+from disamenity_cost import disamenity_costs
 
 
 def get_locations(path_to_turbine_locations:str) -> List[Tuple]:
@@ -12,7 +15,16 @@ def get_locations(path_to_turbine_locations:str) -> List[Tuple]:
     return list(zip(df['x_m'], df['y_m']))
 
 
-def merge(path_to_turbine_locations: str, path_to_lcoe: str, path_to_annual_energy: str, path_to_disamenity_cost: str, path_to_output: str):
+def merge(
+    distances: List[str],
+    path_to_turbine_locations: str,
+    path_to_lcoe: str,
+    path_to_annual_energy: str,
+    path_to_disamenity_cost: str,
+    paths_to_population_by_distance: List[str],
+    path_to_output: str
+):
+
     locations = get_locations(path_to_turbine_locations)
 
     # Decomposes list of tuples in arry of x coordinates and arry of y coordinates; alternative to zip(*locations)
@@ -25,10 +37,33 @@ def merge(path_to_turbine_locations: str, path_to_lcoe: str, path_to_annual_ener
 
     df['lcoe_eur_per_mwh'] = tif_values(path_to_lcoe, coordinates=locations)
     mw_per_turbine = 2
+    df['disamenity_cost'] = tif_values(path_to_disamenity_cost, coordinates=locations)
+    df['annual_energy'] = tif_values(path_to_annual_energy, coordinates=locations)
     df['disamenity_cost_eur_per_mwh'] = [disamenity/(energy*mw_per_turbine) for disamenity, energy in zip(
         tif_values(path_to_disamenity_cost, coordinates=locations),
         tif_values(path_to_annual_energy, coordinates=locations),
     )]
+
+    previous_distance = None
+    cumulated_cost = 0
+    for distance, path_to_population in zip(distances, paths_to_population_by_distance):
+
+        # Population in a counted between two distances
+        df[distance] = tif_values(path_to_population, coordinates=locations)
+        if previous_distance is not None:
+            df[distance] -= df[previous_distance]
+
+            # Disamenity cost (for QA)
+            print(disamenity_costs(previous_distance, distance))
+            df[f'cost_{distance}'] = df[distance] * disamenity_costs(previous_distance, distance)
+        else:
+            print(f'QA disamenity cost list {disamenity_costs(0.2, distance)}')
+            df[f'cost_{distance}'] = df[distance] * disamenity_costs(0.2, distance)
+
+        cumulated_cost += df[f'cost_{distance}']
+        previous_distance = distance
+
+    df['cumulated_cost'] = cumulated_cost
 
     df.reset_index(inplace=True)
 
@@ -67,6 +102,8 @@ if __name__ == "__main__":
     parser.add_argument("path_to_lcoe", type=str)
     parser.add_argument("path_to_annual_energy", type=str)
     parser.add_argument("path_to_disamenity_cost", type=str)
+    parser.add_argument("paths_to_population_by_distance", type=str, nargs="*")
+    parser.add_argument("--distances", type=int, nargs="*")
     parser.add_argument("path_to_output", type=str)
 
     merge(
