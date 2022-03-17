@@ -2,7 +2,7 @@ import argparse
 
 import numpy as np
 
-from file_management import write_tif, tif_data, tif_transform, tif_crs
+from file_management import write_tif, tif_data, tif_transform, tif_crs, tif_values
 
 
 def disamenity_costs(radius_from, radius_to) -> float:
@@ -52,6 +52,7 @@ def calculate_disamenity(distances, source_paths, destination_path):
 
         # Sums in every iteration the disamenity
         print(f'QA disamenity cost map {disamenity}')
+        print(tif_values(full_path=source_path, coordinates=[(4214100, 3539499), (4214700, 3539099)]))
         cumulated_disamenity += population * disamenity
 
         # QA that affine transform matrices are consistent

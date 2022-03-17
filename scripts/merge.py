@@ -45,22 +45,24 @@ def merge(
     )]
 
     previous_distance = None
+    cumulated_population = 0
     cumulated_cost = 0
     for distance, path_to_population in zip(distances, paths_to_population_by_distance):
 
         # Population in a counted between two distances
         df[distance] = tif_values(path_to_population, coordinates=locations)
         if previous_distance is not None:
-            df[distance] -= df[previous_distance]
+            df[distance] -= cumulated_population
 
             # Disamenity cost (for QA)
-            print(disamenity_costs(previous_distance, distance))
+            print(f'QA disamenity cost list {disamenity_costs(previous_distance, distance)}')
             df[f'cost_{distance}'] = df[distance] * disamenity_costs(previous_distance, distance)
         else:
             print(f'QA disamenity cost list {disamenity_costs(0.2, distance)}')
             df[f'cost_{distance}'] = df[distance] * disamenity_costs(0.2, distance)
 
         cumulated_cost += df[f'cost_{distance}']
+        cumulated_population += df[distance]
         previous_distance = distance
 
     df['cumulated_cost'] = cumulated_cost
