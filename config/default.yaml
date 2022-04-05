@@ -11,3 +11,8 @@ parameters:
     lifetime: 30 # yrs # TODO add source
     availability: 0.9 # TODO add source
     distances-in-km: [1, 2, 3, 4]
+spatial-scope: # WGS84
+    x_min: -15.8
+    x_max: 37
+    y_min: 30
+    y_max: 75

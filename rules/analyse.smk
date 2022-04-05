@@ -55,9 +55,14 @@ rule country_shape:
     input:
         script = "scripts/country_shape.py",
         shape = rules.nuts.output.shp,
+    params:
+        x_min = config["spatial-scope"]["x_min"],
+        x_max = config["spatial-scope"]["x_max"],
+        y_min = config["spatial-scope"]["y_min"],
+        y_max = config["spatial-scope"]["y_max"],
     output: "build/data/shapes/{country_id}.shp"
     conda: "../envs/default.yaml"
-    shell: "python {input} {wildcards.country_id} {output}"
+    shell: "python {input} {wildcards.country_id} {params} {output}"
 
 
 rule turbine_placement:
