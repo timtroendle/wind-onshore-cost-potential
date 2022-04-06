@@ -17,7 +17,7 @@ def disamenity_costs(radius_from, radius_to) -> float:
     assert radius_to <= d0, f'radius_to exceeds the maximal distance of {d0} km'
 
     # Cost function
-    a = -28.8
+    a = - 3.6
     c = - a * np.log(d0)
     area_weighted_costs = \
         a/2 * (
