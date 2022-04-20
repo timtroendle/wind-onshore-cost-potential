@@ -18,7 +18,7 @@ EPSG3035 = "EPSG:3035"
 
 def preprocess_capacity_factors(path_to_raw_cf: str, path_to_output: str):
     ds = xr.open_dataset(path_to_raw_cf)
-    ds = ds.mean("time") # ASSUME average over 16 years
+    ds = ds.mean("time") # ASSUME average over 17 years
     ds = ds.expand_dims(time=[1], axis=0) # re-add time dimension as function expects it
     da = convert_old_style_capacity_factor_time_series(ds)
     da = da.squeeze("timestep") # remove dummy time dimension

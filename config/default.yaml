@@ -5,11 +5,11 @@ data-sources:
     nuts: https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/NUTS_2013_01M_SH.zip
     priors: https://md-datasets-cache-zipfiles-prod.s3.eu-west-1.amazonaws.com/trvfb3nwt2-1.zip
 parameters:
-    investment-cost:  963000 # €/MW # TODO add source
-    annual-maintenance-cost: 11340 # €/MW/yr # TODO add source
-    discount-rate: 0.073 # TODO add source
-    lifetime: 30 # yrs # TODO add source
-    availability: 0.9 # TODO add source
+    investment-cost:  1040000 # €/MW; 2030 projection; Source: DEA March 2022
+    annual-maintenance-cost: 16800 # €/MW/yr; 2030 projection; variable+fixed O&M; Source: DEA March 2022
+    discount-rate: 0.05 # own assumption
+    lifetime: 30 # yrs; 2030 projection; Source: DEA March 2022
+    availability: 0.9 # planned outage and array effects 2030; Source: EEA 2009, Europe's onshore and offshore wind energy potential
     distances-in-km: [1, 2, 3, 4]
 spatial-scope: # WGS84
     x_min: -15.8
