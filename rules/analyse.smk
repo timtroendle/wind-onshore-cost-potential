@@ -71,11 +71,13 @@ rule turbine_placement:
         script = "scripts/turbine_locations.py",
         shape = "build/data/shapes/{country_id}.shp",
         priors = rules.priors.output
+    params:
+        turbine_separation_distance = config["parameters"]["turbine-separation-distance"]
     output:
         csv = "build/turbine-locations-{country_id}.csv",
         tif = "build/turbine-locations-{country_id}.tif"
     conda: "../envs/glaes.yaml"
-    shell: "python {input} {output}"
+    shell: "python {input} {params} {output}"
 
 
 rule cost_per_turbine:

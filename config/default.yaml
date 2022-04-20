@@ -10,6 +10,7 @@ parameters:
     discount-rate: 0.05 # own assumption
     lifetime: 30 # yrs; 2030 projection; Source: DEA March 2022
     availability: 0.9 # planned outage and array effects 2030; Source: EEA 2009, Europe's onshore and offshore wind energy potential
+    turbine-separation-distance: 500 # m, corresponds to 8 MW / km2 for a 2 MW turbine
     distances-in-km: [1, 2, 3, 4]
 spatial-scope: # WGS84
     x_min: -15.8

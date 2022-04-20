@@ -6,7 +6,10 @@ import pandas as pd
 import numpy as np
 
 
-def turbine_placement(input_path, prior_directory_path, output_path_csv, output_path_tif):
+def turbine_placement(input_path: str, prior_directory_path: str, turbine_separation_m: int,
+                      output_path_csv: str, output_path_tif: str):
+    assert turbine_separation_m > 50 # value is in meters and must not be smaller than 50
+
     gl.Priors.loadDirectory(prior_directory_path)
 
     ec = gl.ExclusionCalculator(input_path, srs=3035, pixelSize=100, limitOne=False)
@@ -63,7 +66,7 @@ def turbine_placement(input_path, prior_directory_path, output_path_csv, output_
     ec.excludePrior("lake_proximity", value=(None,1000) )
 
     #turbine placement
-    ec.distributeItems(separation=500)
+    ec.distributeItems(separation=turbine_separation_m)
     turbine_coordinates = ec.itemCoords
 
     #Advanced placement (not implemented)
@@ -88,6 +91,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("input_path", type=str)
     parser.add_argument("prior_directory_path", type=str)
+    parser.add_argument("turbine_separation_m", type=int)
     parser.add_argument("output_path_csv", type=str)
     parser.add_argument("output_path_tif", type=str)
 
