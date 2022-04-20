@@ -4,7 +4,7 @@
 rule lcoe:
     message: "Calculate LCOE from capacity factors."
     input:
-        script = "scripts/analyse/lcoe.py",
+        script = "scripts/lcoe.py",
         capacity_factors = rules.capacity_factors.output[0],
     params:
         investment_cost = config["parameters"]["investment-cost"],
@@ -22,7 +22,7 @@ rule lcoe:
 rule lcoe_cdf:
     message: "Visualise the empiricial CDF of LCOE."
     input:
-        script = "scripts/analyse/lcoe_ecdf.py",
+        script = "scripts/lcoe_ecdf.py",
         lcoe = rules.lcoe.output[0]
     output: "build/lcoe.png"
     conda: "../envs/default.yaml"
