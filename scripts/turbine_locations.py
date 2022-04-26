@@ -17,13 +17,13 @@ def turbine_placement(input_path: str, prior_directory_path: str, turbine_separa
     ##### exclusions #####
 
     # Areas above the alpine forest line
-    ec.excludePrior("elevation_threshold", value=(1750, None) ) # alpine forest line assumed at 1750 m
+    ec.excludePrior("elevation_threshold", value=(1800, None) ) # alpine forest line assumed at 1750 m
 
     # maximum slope (degrees) and sea
-    ec.excludePrior("slope_threshold", value=(11.3, None) )
+    ec.excludePrior("slope_threshold", value=(10, None) )
 
     # "water bodies"
-    ec.excludePrior("river_proximity", value=(None, 100) )
+    ec.excludePrior("river_proximity", value=(None, 300) )
 
     # "settlement areas - 200m buffer"
     ec.excludePrior("settlement_proximity", value=(None, 200) )
@@ -34,36 +34,36 @@ def turbine_placement(input_path: str, prior_directory_path: str, turbine_separa
     ec.excludePrior("mining_proximity", value=(None, 300) )
 
     # "railways - 300m buffer"
-    ec.excludePrior("railway_proximity", value=(None, 300) )
+    ec.excludePrior("railway_proximity", value=(None, 200) )
 
     # "motorways, primary, and secondary roads - 300m buffer"
-    ec.excludePrior("roads_main_proximity", value=(None, 300) )
-    ec.excludePrior("roads_secondary_proximity", value=(None, 300) )
+    ec.excludePrior("roads_main_proximity", value=(None, 200) )
+    ec.excludePrior("roads_secondary_proximity", value=(None, 200) )
 
     # "airport public safety zones - 5100m buffer"
-    ec.excludePrior("airport_proximity", value=(None, 5100) )
+    ec.excludePrior("airport_proximity", value=(None, 5000) )
 
     # "power grid( >110kV) - 200m buffer"
     ec.excludePrior("power_line_proximity", value=(None, 200) )
 
     # "national parks - 1000m buffer"
-    ec.excludePrior("protected_park_proximity", value=(None,300) )
+    ec.excludePrior("protected_park_proximity", value=(None,1000) )
 
     # "Natura 2000 - habitats directive sites"
-    ec.excludePrior("protected_habitat_proximity", value=(None, 0) )
+    ec.excludePrior("protected_habitat_proximity", value=(None, 1500) )
 
     # "Natura 2000 - birds directive sites"
-    ec.excludePrior("protected_bird_proximity", value=(None, 0) )
+    ec.excludePrior("protected_bird_proximity", value=(None, 1500) )
 
     # "Other protected areas"
     # "*Biosphere reserves, landscape protection areas, natural monuments and sites,
     #   protected habitats, and landscape section"
-    ec.excludePrior("protected_biosphere_proximity", value=(None, 0) )
-    ec.excludePrior("protected_landscape_proximity", value=(None, 0) )
-    ec.excludePrior("protected_natural_monument_proximity", value=(None, 0) )
+    ec.excludePrior("protected_biosphere_proximity", value=(None, 1000) )
+    ec.excludePrior("protected_landscape_proximity", value=(None, 1000) )
+    ec.excludePrior("protected_natural_monument_proximity", value=(None, 1000) )
 
     # "lakes (> 50 ha) - 1000m buffer"
-    ec.excludePrior("lake_proximity", value=(None,1000) )
+    ec.excludePrior("lake_proximity", value=(None,400) )
 
     #turbine placement
     ec.distributeItems(separation=turbine_separation_m)
