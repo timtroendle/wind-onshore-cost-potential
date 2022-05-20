@@ -28,19 +28,19 @@ def turbine_placement(input_path: str, prior_directory_path: str, turbine_separa
     ec.excludePrior("lake_proximity", value=(None, 400))
 
     # other water bodies
-    ec.excludePrior("river_proximity", value=(None, 300))
+    ec.excludePrior("river_proximity", value=(None, 200))
 
     # settlement areas
     ec.excludePrior("settlement_proximity", value=(None, 200))
 
     # industrial, commercial, and mining areas
     ec.excludePrior("industrial_proximity", value=(None, 300))
-    ec.excludePrior("mining_proximity", value=(None, 300))
+    ec.excludePrior("mining_proximity", value=(None, 100))
 
     # railways, motorways, primary and secondary roads
-    ec.excludePrior("railway_proximity", value=(None, 200))
+    ec.excludePrior("railway_proximity", value=(None, 150))
     ec.excludePrior("roads_main_proximity", value=(None, 200))
-    ec.excludePrior("roads_secondary_proximity", value=(None, 200))
+    ec.excludePrior("roads_secondary_proximity", value=(None, 100))
 
     # airport public safety zones
     ec.excludePrior("airport_proximity", value=(None, 5000))
@@ -55,10 +55,15 @@ def turbine_placement(input_path: str, prior_directory_path: str, turbine_separa
     ec.excludePrior("protected_habitat_proximity", value=(None, 1500))
     ec.excludePrior("protected_bird_proximity", value=(None, 1500))
 
+    ec.excludePrior("protected_reserve_proximity", value=(None, 500))
+
     # other protected areas (biosphere reserves, landscape protection areas, natural monuments)
-    ec.excludePrior("protected_biosphere_proximity", value=(None, 1000))
-    ec.excludePrior("protected_landscape_proximity", value=(None, 1000))
+    ec.excludePrior("protected_biosphere_proximity", value=(None, 300))
+    ec.excludePrior("protected_landscape_proximity", value=(None, 500))
     ec.excludePrior("protected_natural_monument_proximity", value=(None, 1000))
+
+    ec.excludePrior("protected_wilderness_proximity", value=(None, 1000))
+    
 
     #turbine placement
     ec.distributeItems(separation=turbine_separation_m)

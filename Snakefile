@@ -8,14 +8,14 @@ rule all:
     message: "Run entire analysis."
     input:
         "build/cost-potential-curve-DE.png",
-        "build/cost-potential-curve-DK.png",
-        "build/cost-potential-curve-PL.png",
-        "build/cost-potential-curve-CZ.png",
-        "build/cost-potential-curve-AT.png",
-        "build/cost-potential-curve-CH.png",
+        #"build/cost-potential-curve-DK.png",
+        #"build/cost-potential-curve-PL.png",
+        #"build/cost-potential-curve-CZ.png",
+        #"build/cost-potential-curve-AT.png",
+        #"build/cost-potential-curve-CH.png",
         #"build/cost-potential-curve-FR.png",
-        "build/cost-potential-curve-BE.png",
-        "build/cost-potential-curve-NL.png"
+        #"build/cost-potential-curve-BE.png",
+        #"build/cost-potential-curve-NL.png"
 
 
 rule clean:
