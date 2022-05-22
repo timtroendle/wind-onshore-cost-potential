@@ -55,10 +55,8 @@ def merge(
             df[distance] -= cumulated_population
 
             # Disamenity cost (for QA)
-            print(f'QA disamenity cost list {disamenity_costs(previous_distance, distance)}')
             df[f'cost_{distance}'] = df[distance] * disamenity_costs(previous_distance, distance)
         else:
-            print(f'QA disamenity cost list {disamenity_costs(0.2, distance)}')
             df[f'cost_{distance}'] = df[distance] * disamenity_costs(0.2, distance)
 
         cumulated_cost += df[f'cost_{distance}']
