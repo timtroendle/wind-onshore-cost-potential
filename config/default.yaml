@@ -3,7 +3,7 @@ data-sources:
     population: https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/JRC_GRID_2018.zip
     capacity-factors: https://zenodo.org/record/3899687/files/wind-onshore-timeseries.nc
     nuts: https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/NUTS_2013_01M_SH.zip
-    priors: https://md-datasets-cache-zipfiles-prod.s3.eu-west-1.amazonaws.com/trvfb3nwt2-1.zip
+    priors: https://prod-dcd-datasets-cache-zipfiles.s3.eu-west-1.amazonaws.com/trvfb3nwt2-1.zip # from: https://data.mendeley.com/datasets/trvfb3nwt2
 parameters:
     investment-cost:  1040000 # €/MW; 2030 projection; Source: DEA March 2022
     annual-maintenance-cost: 16800 # €/MW/yr; 2030 projection; variable+fixed O&M; Source: DEA March 2022
