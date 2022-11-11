@@ -1,18 +1,25 @@
-# Social cost of wind power
+# Cost-potential curves of onshore wind energy: <br> the role of disamenity costs
 
-Social cost of wind power in Europe with a focus on disamenity costs (in addition to technology cost).
+This collection estimates the impact of incorporating disamenity costs of wind onshore in Europe (in addition to technology cost). The code and the deriving analyses have been used for the publication:
 
-This repository contains the entire scientific project. The philosophy behind this repository is that no intermediary results are included, but all results are computed from raw data and code.
+> TODO
+
+The philosophy behind this repository is that no intermediary results are included, but all results are computed from raw data and code.
 
 ## Getting ready
 
-You need [conda](https://conda.io/docs/index.html) to run the analysis. Using conda, you can create a conda environment from within you can run it:
+You need [conda](https://conda.io/docs/index.html) to run the analysis. Using conda, you can create a conda environment from with the required specifications. Finally, downgrading `tabulate==0.8.10` is necessary to avoid the bug described e.g. [here](https://github.com/cov-lineages/pangolin/issues/489):
 
-    conda env create -f environment.yaml
+    > conda env create -f environment.yaml
+    > conda activate wind-onshore-cost-potential
+    (wind-onshore-cost-potential) > conda install tabulate==0.8.10
+ 
 
 ## Run the analysis
 
-    snakemake --use-conda -j1
+    (wind-onshore-cost-potential) > snakemake --use-conda -j1 --conda-frontend conda
+
+If this command results in an error (Windows: `OSError: [WinError 1314] A required privilege is not held by the client`), try launching the script with Administrator priviledges.
 
 This will run all analysis steps to reproduce results.
 
@@ -20,11 +27,8 @@ You can also run certain parts only by using other `snakemake` rules; to get a l
 
 To generate a PDF of the dependency graph of all steps `build/dag.pdf`, run:
 
-    snakemake --use-conda -j1 -f dag
+    (wind-onshore-cost-potential) > snakemake --use-conda -j1 -f dag --conda-frontend conda
 
-## Run the tests
-
-    snakemake --use-conda -j1 test
 
 ## Repo structure
 
