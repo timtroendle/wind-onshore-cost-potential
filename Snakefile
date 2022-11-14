@@ -7,6 +7,7 @@ localrules: all, clean
 rule all:
     message: "Run entire analysis."
     input:
+<<<<<<< HEAD
         "build/cost-potential-curve-AT.png",
         "build/cost-potential-curve-BE.png",
         "build/cost-potential-curve-BG.png",
@@ -36,6 +37,9 @@ rule all:
         "build/cost-potential-curve-SE.png",
         "build/cost-potential-curve-SI.png",
         "build/cost-potential-curve-SK.png"
+=======
+        "build/cost-potential-curve-DE.png"
+>>>>>>> 4d2718b9ecf52aed183ae2dd36df44acd6569992
 
 
 rule clean:

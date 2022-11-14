@@ -70,7 +70,7 @@ def merge(
     df.to_csv(path_to_output)
 
 
-def infer_map_coords(map: xr.DataArray, x: int, y: int, x_res: int, y_res: int): # TODO move to Python 3.9 to improve type hints
+def infer_map_coords(map: xr.DataArray, x: int, y: int, x_res: int, y_res: int):
     """Returns map coordinates closest to input coordinates."""
     x_proximity = map.x.loc[slice(x - x_res, x + x_res)]
     y_proximity = map.y.loc[slice(y - y_res, y + y_res)]

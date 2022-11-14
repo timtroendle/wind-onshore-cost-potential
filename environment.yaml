@@ -1,4 +1,4 @@
-name: wind-externalities
+name: wind-onshore-cost-potential
 channels:
     - conda-forge
     - bioconda
@@ -6,3 +6,4 @@ dependencies:
     - python=3.8
     - flake8=3.8.3
     - snakemake-minimal=6.5.3
+    - tabulate=0.8.10

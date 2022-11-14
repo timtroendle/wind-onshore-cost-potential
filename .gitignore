@@ -44,8 +44,8 @@ __pycache__
 
 # Snakemake
 .snakemake/
-dag.pdf
-.ipynb_checkpoints/
-data/JRC_POPULATION_2018.dbf
-data/
 .idea/
+.vscode/
+.ipynb_checkpoints/
+data/
+dag.pdf

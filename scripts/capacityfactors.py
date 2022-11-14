@@ -4,9 +4,8 @@ import numpy as np
 import pandas as pd
 import geopandas as gpd
 import xarray as xr
-import rioxarray
+import rioxarray # necessary for the rio accessor of DataArrays
 from shapely.geometry import Point
-from geopandas.tools import overlay
 
 
 DEPRECATED_GRID_SIZE_IN_M = 50000 # old style capacity factors are on a grid of 50km size

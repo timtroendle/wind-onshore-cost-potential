@@ -19,4 +19,4 @@ rule capacity_factors:
     output: "build/data/capacity-factors.tif"
     conda: "../envs/default.yaml"
     shell: "rio warp {input.raw} -o {output} --like {input.reference} "
-           "--src-nodata 65535.0 --dst-nodata nan --resampling average" # TODO check resampling
+           "--src-nodata 65535.0 --dst-nodata nan --resampling average"
