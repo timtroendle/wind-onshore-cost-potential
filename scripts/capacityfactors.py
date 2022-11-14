@@ -1,3 +1,5 @@
+"""Processes data about wind onshore capacity factors to generate the reference .tif file"""
+
 import argparse
 
 import numpy as np
@@ -50,16 +52,13 @@ def convert_old_style_capacity_factor_time_series(ts):
         site_id.item(): (ts["lon"].sel(site_id=site_id).item(), ts["lat"].sel(site_id=site_id).item())
         for site_id in ts.site_id
     }
-    gdf = (
-        gpd
-        .GeoDataFrame(
-            data={"site_id": [site_id for site_id in site_id_map.keys()]},
-            geometry=[Point(lon, lat) for lon, lat in site_id_map.values()],
-            crs=WGS84
-        )
-        .set_index("site_id")
-        .to_crs(EPSG3035)
-    )
+
+    gdf = gpd.GeoDataFrame(
+        data={"site_id": [site_id for site_id in site_id_map.keys()]},
+        geometry=[Point(lon, lat) for lon, lat in site_id_map.values()],
+        crs=WGS84,
+    ).set_index("site_id").to_crs(EPSG3035) # type: ignore
+
     gdf["x"] = [round(point.coords[0][0], ndigits=0) for point in gdf.geometry] # round to meter
     gdf["y"] = [round(point.coords[0][1], ndigits=0) for point in gdf.geometry] # round to meter
     ts["x"] = gdf["x"]
