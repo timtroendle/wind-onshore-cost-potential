@@ -16,7 +16,7 @@ def calculate_lcoe(investment_costs, annual_maintenance_costs, path_to_capacity_
     annual_costs = investment_costs * annuity_factor + annual_maintenance_costs
     annual_energy = capacity_factors * HOURS_PER_YEAR * availability
     lcoe = annual_costs / annual_energy
-    lcoe.rio.to_raster(path_to_output_lcoe) # TODO compress data
+    lcoe.rio.to_raster(path_to_output_lcoe, compress="lzw")
     annual_energy.rio.to_raster(path_to_output_energy)
 
 

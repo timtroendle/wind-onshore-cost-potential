@@ -34,7 +34,6 @@ To generate a PDF of the dependency graph of all steps `build/dag.pdf`, run:
 * `scripts`: contains the Python source code as scripts
 * `rules`: contains Snakemake rule definitions
 * `envs`: contains execution environments
-* `tests`: contains the test code
 * `config`: configurations used in the study
 * `data`: place for raw data
 * `build`: will contain all results (does not exist initially)
