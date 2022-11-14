@@ -1,8 +1,19 @@
+"""Uses information about capacity factors and costs for calculate engineering costs"""
+
 import argparse
 
 import rioxarray
 
 HOURS_PER_YEAR = 8760
+
+
+def _present_value_of_annuity_factor(discount_rate, lifetime):
+    nominator = ((1 + discount_rate) ** lifetime) * discount_rate
+    denominator = ((1 + discount_rate) ** lifetime) - 1
+    if discount_rate == 0:
+        return 1 / lifetime
+    else:
+        return nominator / denominator
 
 
 def calculate_lcoe(investment_costs, annual_maintenance_costs, path_to_capacity_factors,
@@ -18,15 +29,6 @@ def calculate_lcoe(investment_costs, annual_maintenance_costs, path_to_capacity_
     lcoe = annual_costs / annual_energy
     lcoe.rio.to_raster(path_to_output_lcoe, compress="lzw")
     annual_energy.rio.to_raster(path_to_output_energy)
-
-
-def _present_value_of_annuity_factor(discount_rate, lifetime):
-    nominator = ((1 + discount_rate) ** lifetime) * discount_rate
-    denominator = ((1 + discount_rate) ** lifetime) - 1
-    if discount_rate == 0:
-        return 1 / lifetime
-    else:
-        return nominator / denominator
 
 
 if __name__ == "__main__":

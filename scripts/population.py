@@ -1,3 +1,5 @@
+"""Counts counts for each cell the population within a given radius and stores the information in a raster file"""
+
 import argparse
 
 import math

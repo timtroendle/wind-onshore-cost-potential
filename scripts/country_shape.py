@@ -1,3 +1,5 @@
+"""Generates a single shape file per country from individual NUTS shapes"""
+
 import argparse
 
 from shapely.geometry import box

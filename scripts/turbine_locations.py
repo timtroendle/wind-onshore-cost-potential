@@ -1,3 +1,5 @@
+"""Uses the GLAES package and a set of exclusion criteria to generate a list of potential wind turbine locations"""
+
 import argparse
 
 import geokit as gk

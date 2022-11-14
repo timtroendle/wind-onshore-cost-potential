@@ -1,3 +1,5 @@
+"""Generates raster files containg the total disamanity cost per cell"""
+
 import argparse
 
 import numpy as np
@@ -70,9 +72,9 @@ def calculate_disamenity(distances, source_paths, destination_path):
 
     write_tif(
         full_path=destination_path,
-        data=cumulated_disamenity,
-        transform=transform,
-        crs=crs,
+        data=cumulated_disamenity, # type: ignore
+        transform=transform, # type: ignore
+        crs=crs, # type: ignore
     )
 
 

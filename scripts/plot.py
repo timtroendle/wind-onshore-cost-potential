@@ -1,3 +1,5 @@
+"""Produces cost potential curve figures based on engineering costs with as well as without disamenity costs"""
+
 import argparse
 
 import pandas as pd
@@ -9,14 +11,13 @@ def plot(path_to_turbines: str, path_to_output: str):
     capacity = 2
     turbines = pd.read_csv(path_to_turbines, index_col=0)
 
-    plt.figure()
 
     cumulative_capacity = [x * capacity / 1000 for x in range(len(turbines))]
-
     engineering_cost = turbines['lcoe_eur_per_mwh'].sort_values()
-    plt.plot(cumulative_capacity, engineering_cost, label='Engineering cost')
-
     disamenity_cost = (turbines['lcoe_eur_per_mwh'] + turbines['disamenity_cost_eur_per_mwh']).sort_values()
+    
+    plt.figure()
+    plt.plot(cumulative_capacity, engineering_cost, label='Engineering cost')
     plt.plot(cumulative_capacity, disamenity_cost, label='Engineering cost\n+disamenity cost')
 
     plt.xlabel('Cumulative capacity (GW)')

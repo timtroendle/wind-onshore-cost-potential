@@ -1,3 +1,5 @@
+"""Produces a figure representing the LCOE's cumulated distribution function"""
+
 import argparse
 
 import matplotlib.pyplot as plt

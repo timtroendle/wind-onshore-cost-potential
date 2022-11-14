@@ -1,3 +1,4 @@
+"""Collects functions used to extract zip files and interact with raster files"""
 
 import os
 import rasterio
@@ -56,7 +57,7 @@ def tif_values(full_path: str, coordinates: List[tuple]) -> List[float]:
     xs, ys = np.array(coordinates).transpose() 
     
     with rasterio.open(full_path) as src:
-        rows, cols = rasterio.transform.rowcol(src.transform, xs, ys)
+        rows, cols = rasterio.transform.rowcol(src.transform, xs, ys) # type: ignore
         index, = src.indexes
         data = src.read(index)
 
@@ -78,7 +79,7 @@ def write_tif(full_path: str, data: np.ndarray, transform: Affine, crs: rasterio
         count=1,
         dtype=dtype,
         crs=crs,
-        compress='lzw',  # TODO: Are we sure that the original .tif was losslessly comporessed, and here also?
+        compress='lzw',
         transform=transform,
     ) as dst:
         dst.write(data, 1)

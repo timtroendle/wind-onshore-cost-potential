@@ -1,3 +1,5 @@
+"""Merges information specific to the individual (potential) turbine locations into a comprehensive output table"""
+
 import argparse
 
 import pandas as pd
