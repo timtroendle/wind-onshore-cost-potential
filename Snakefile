@@ -7,15 +7,35 @@ localrules: all, clean
 rule all:
     message: "Run entire analysis."
     input:
+        "build/cost-potential-curve-AT.png",
+        "build/cost-potential-curve-BE.png",
+        "build/cost-potential-curve-BG.png",
+        #"build/cost-potential-curve-CH.png",  # not in EU scenario
+        #"build/cost-potential-curve-CY.png",  # turbine placement does not work
+        "build/cost-potential-curve-CZ.png",
         "build/cost-potential-curve-DE.png",
-        #"build/cost-potential-curve-DK.png",
-        #"build/cost-potential-curve-PL.png",
-        #"build/cost-potential-curve-CZ.png",
-        #"build/cost-potential-curve-AT.png",
-        #"build/cost-potential-curve-CH.png",
-        #"build/cost-potential-curve-FR.png",
-        #"build/cost-potential-curve-BE.png",
-        #"build/cost-potential-curve-NL.png"
+        "build/cost-potential-curve-DK.png",
+        "build/cost-potential-curve-EE.png",
+        "build/cost-potential-curve-EL.png",
+        "build/cost-potential-curve-ES.png",
+        "build/cost-potential-curve-FI.png",
+        "build/cost-potential-curve-FR.png",
+        "build/cost-potential-curve-HR.png",
+        "build/cost-potential-curve-HU.png",
+        "build/cost-potential-curve-IE.png",
+        "build/cost-potential-curve-IT.png",
+        "build/cost-potential-curve-LT.png",
+        "build/cost-potential-curve-LU.png",
+        "build/cost-potential-curve-LV.png",
+        #"build/cost-potential-curve-MT.png",  # turbine placement does not work
+        "build/cost-potential-curve-NL.png",
+        #"build/cost-potential-curve-NO.png",  # not in EU scenario
+        "build/cost-potential-curve-PL.png",
+        "build/cost-potential-curve-PT.png",
+        "build/cost-potential-curve-RO.png",
+        "build/cost-potential-curve-SE.png",
+        "build/cost-potential-curve-SI.png",
+        "build/cost-potential-curve-SK.png"
 
 
 rule clean:
