@@ -1,4 +1,4 @@
-name: wind-externalities
+name: wind-onshore-cost-potential
 channels:
     - conda-forge
     - bioconda
