@@ -8,12 +8,11 @@ The philosophy behind this repository is that no intermediary results are includ
 
 ## Getting ready
 
-You need [conda](https://conda.io/docs/index.html) to run the analysis. Using conda, you can create a conda environment from with the required specifications. Finally, downgrading `tabulate==0.8.10` is necessary to avoid the bug described e.g. [here](https://github.com/cov-lineages/pangolin/issues/489):
+You need [conda](https://conda.io/docs/index.html) to run the analysis. Using conda, you can create a conda environment from with the required specifications.:
 
     > conda env create -f environment.yaml
     > conda activate wind-onshore-cost-potential
-    (wind-onshore-cost-potential) > conda install tabulate==0.8.10
- 
+
 
 ## Run the analysis
 
