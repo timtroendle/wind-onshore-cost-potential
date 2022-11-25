@@ -4,9 +4,9 @@ This collection estimates the impact of incorporating disamenity costs of wind o
 
 > Ruhnau, O., Eicke, A., Sgarlato, R., Tröndle, T., Hirth, L., 2022. Cost-potential curves of onshore wind energy: the role of disamenity costs. Environmental and Resource Economics. DOI: [10.1007/s10640-022-00746-2](https://doi.org/10.1007/s10640-022-00746-2)
 
-The philosophy behind this repository is that no intermediary results are included, but all results are computed from raw data and code.
+The philosophy behind this repository is that no intermediary results are included, but all results are computed from raw data and code. The result data is published on 
 
-The results data is published on [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7361513.svg)](https://doi.org/10.5281/zenodo.7361513)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7361513.svg)](https://doi.org/10.5281/zenodo.7361513)
 
 ## Getting ready
 
