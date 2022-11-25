@@ -6,6 +6,8 @@ This collection estimates the impact of incorporating disamenity costs of wind o
 
 The philosophy behind this repository is that no intermediary results are included, but all results are computed from raw data and code.
 
+The results data is published on [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7361513.svg)](https://doi.org/10.5281/zenodo.7361513)
+
 ## Getting ready
 
 You need [conda](https://conda.io/docs/index.html) to run the analysis. Using conda, you can create a conda environment from with the required specifications.:
